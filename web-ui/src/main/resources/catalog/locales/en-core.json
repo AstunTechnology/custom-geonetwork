@@ -214,7 +214,6 @@
     "sendPasswordLinkToMyEmail": "Send password link to my email",
     "service": "Service",
     "serviceType": "Service type",
-    "serviceType": "Service type",
     "serviceTypes": "Service types",
     "signIn": "Sign in",
     "signedInAs": "Signed in as",
@@ -392,5 +391,6 @@
     "resolveCaptcha": "Resolve the captcha",
     "resolutions": "Resolution",
     "loginTitle": "Sign in",
-    "loginText": "Sign in with your username and password to add and edit metadata."
+    "loginText": "Sign in with your username and password to add and edit metadata.",
+    "ProjectionSwitcher": "Projection Switcher"
 }
