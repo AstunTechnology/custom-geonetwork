@@ -399,5 +399,6 @@
     "editorHome": "Editor board",
     "adminHome": "Summary",
     "allAdmins": "Administrators",
-    "projectionSwitcher": "Projection Switcher"
+    "projectionSwitcher": "Projection Switcher",
+    "projection": "Projection"
 }

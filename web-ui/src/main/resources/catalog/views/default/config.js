@@ -140,12 +140,21 @@
             }
 
             var projection = ol.proj.get(p.code);
+            //Code to get weird or old config
+            if(typeof p.extent === "string") {
+              p.extent = JSON.parse(p.extent);
+            }
             if(p.extent && p.extent.length && p.extent.length == 4
                 && !isNaN(p.extent[0]) && p.extent[0] != null
                 && !isNaN(p.extent[1]) && p.extent[1] != null
                 && !isNaN(p.extent[2]) && p.extent[2] != null
                 && !isNaN(p.extent[3]) && p.extent[3] != null) {
               projection.setExtent(p.extent);
+            }
+            
+            //Code to get weird or old config
+            if(typeof p.worldExtent === "string") {
+              p.extent = JSON.parse(p.worldExtent);
             }
             if(p.worldExtent && p.worldExtent.length && p.worldExtent.length == 4
                 && !isNaN(p.worldExtent[0]) && p.worldExtent[0] != null

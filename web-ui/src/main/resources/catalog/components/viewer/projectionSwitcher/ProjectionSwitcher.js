@@ -53,6 +53,12 @@
                       'gnMap',
                       '$rootScope',
                       function (scope, gnViewerSettings, gnMap, $rootScope) {
+                        
+                        scope.listOpen = false;
+                        
+                        scope.toggleList = function() {
+                          scope.listOpen = !scope.listOpen;
+                        }
 
                         // Change the projection of an existing layer
                         scope.changeLayerProjection = function (layer, oldProj,
@@ -111,6 +117,12 @@
                             extent : newExtent
                           };
 
+
+                          //Code to get weird or old config
+                          if(typeof projectionConfig.resolutions === "string") {
+                            projectionConfig.resolutions = 
+                              JSON.parse(projectionConfig.resolutions);
+                          }
                           if (projectionConfig.resolutions
                               && projectionConfig.resolutions.length
                               && projectionConfig.resolutions.length > 0) {
@@ -119,7 +131,9 @@
                             })
                           }
 
+                          // Set the view
                           var newView = new ol.View(mapsConfig);
+                          scope.map.setView(newView);
 
                           // Rearrange base layers to adapt (if possible) to new
                           // projection
@@ -181,9 +195,6 @@
 
                           // We have all the info, change the map
 
-                          // Set the view
-                          scope.map.setView(newView);
-
                           // Update Background Layers to trigger tool changes
                           gnViewerSettings.bgLayers = bgLayers;
 
@@ -204,6 +215,8 @@
                           // Relocate map to extent
                           scope.map.getView().fit(newExtent,
                               scope.map.getSize());
+                          
+                          scope.listOpen = false;
 
                         };
 
