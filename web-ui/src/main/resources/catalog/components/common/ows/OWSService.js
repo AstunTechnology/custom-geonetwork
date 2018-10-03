@@ -221,7 +221,8 @@
               //send request and decode result
               if (true) {
                 $http.get(url, {
-                  cache: true
+                  cache: true,
+                  timeout: 5000
                 })
                     .success(function(data) {
                       try {
@@ -255,7 +256,8 @@
               if (gnUrlUtils.isValid(url)) {
 
                 $http.get(url, {
-                  cache: true
+                  cache: true,
+                  timeout: 5000
                 })
                     .success(function(data, status, headers, config) {
                       if (data) {
@@ -286,7 +288,8 @@
 
               if (gnUrlUtils.isValid(url)) {
                 $http.get(url, {
-                  cache: true
+                  cache: true,
+                  timeout: 5000
                 })
                     .success(function(data, status, headers, config) {
                       var xfsCap = parseWFSCapabilities(data);
