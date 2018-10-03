@@ -300,7 +300,7 @@
 
                     })
                     .error(function(data, status, headers, config) {
-                      defer.reject(status);
+                      defer.reject($translate.instant('wfsGetCapabilitiesFailed'));
                     });
               }
             }
