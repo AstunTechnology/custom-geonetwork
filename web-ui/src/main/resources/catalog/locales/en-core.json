@@ -392,5 +392,13 @@
     "resolutions": "Resolution",
     "loginTitle": "Sign in",
     "loginText": "Sign in with your username and password to add and edit metadata.",
-    "ProjectionSwitcher": "Projection Switcher"
+    "siteLogo": "Logo",
+    "languageSwitcher": "Language switcher",
+    "avatar": "Avatar",
+    "first": "First",
+    "editorHome": "Editor board",
+    "adminHome": "Summary",
+    "allAdmins": "Administrators",
+    "projectionSwitcher": "Projection Switcher",
+    "projection": "Projection"
 }
