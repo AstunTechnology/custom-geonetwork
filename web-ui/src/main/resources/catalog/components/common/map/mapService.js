@@ -1078,7 +1078,7 @@
               }
 
               if (!isLayerAvailableInMapProjection) {
-              //  errors.push($translate.instant('layerNotAvailableInMapProj'));
+                errors.push($translate.instant('layerNotAvailableInMapProj'));
                 console.warn($translate.instant('layerNotAvailableInMapProj'));
               }
 
@@ -1119,24 +1119,30 @@
                   var vectorFormat = new ol.format.WFS();
               }
 
+              var urlService = url;
+              
+
+              //check if proxy is needed
+              var _url = url.split('/');
+              _url = _url[0] + '/' + _url[1] + '/' + _url[2] + '/';
+              if ($.inArray(_url, gnGlobalSettings.requireProxy) >= 0
+                && url.indexOf(gnGlobalSettings.proxyUrl) != 0) {
+                getCapLayer.useProxy = true;
+              }
+              
               var vectorSource = new ol.source.Vector({
                 format: vectorFormat,
-                loader: function(extent, resolution, projection) {
-                  if (this.loadingLayer) {
-                    return;
-                  }
-
-                  this.loadingLayer = true;
-
-                  var parts = url.split('?');
-
+                url: function(extent) {
+                  var parts = urlService.split('?');
+                  
                   var urlGetFeature = gnUrlUtils.append(parts[0],
                       gnUrlUtils.toKeyValue({
                         service: 'WFS',
                         request: 'GetFeature',
                         version: getCapLayer.version,
                         srsName: map.getView().getProjection().getCode(),
-                        bbox: extent.join(','),
+                        bbox: extent.join(',') + "," + 
+                          map.getView().getProjection().getCode(),
                         typename: getCapLayer.name.prefix + ':' +
                                    getCapLayer.name.localPart}));
 
@@ -1160,22 +1166,10 @@
                     urlGetFeature = gnGlobalSettings.proxyUrl
                                         + encodeURIComponent(urlGetFeature);
                   }
-
-                  $.ajax({
-                    url: urlGetFeature
-                  })
-                      .done(function(response) {
-                        // TODO: Check WFS exception
-                        vectorSource.addFeatures(vectorFormat.
-                            readFeatures(response));
-                      })
-                      .then(function() {
-                        this.loadingLayer = false;
-                      });
+                  
+                  return urlGetFeature;
                 },
-                strategy: ol.loadingstrategy.bbox,
-                projection: map.getView().getProjection().getCode(),
-                url: url
+                strategy: ol.loadingstrategy.bbox
               });
 
               var extent = null;
@@ -1980,8 +1974,7 @@
          * appear in the layer manager
          */
         selected: function(layer) {
-          return layer.displayInLayerManager && !layer.get('fromWps') &&
-              (!layer.get('errors') || !layer.get('errors').length);
+          return layer.displayInLayerManager && !layer.get('fromWps');
         },
         visible: function(layer) {
           return layer.displayInLayerManager && layer.visible;

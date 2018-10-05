@@ -431,6 +431,9 @@
             var layers = capObj.featureTypeList.featureType;
 
             for (var i = 0, len = layers.length; i < len; i++) {
+              if(!layers[i].version) {
+                layers[i].version = capObj.version;                  
+              }
               //check layername
               if (name == layers[i].name.localPart ||
                   name == layers[i].name.prefix + ':' +
