@@ -400,5 +400,6 @@
     "adminHome": "Summary",
     "allAdmins": "Administrators",
     "projectionSwitcher": "Projection Switcher",
-    "projection": "Projection"
+    "projection": "Projection",
+    "layersWithWhiteSpaces": "Some layers on this map contains white spaces on their name. Layers with white spaces may not be properly printed."
 }
