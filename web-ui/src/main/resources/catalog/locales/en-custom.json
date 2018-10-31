@@ -67,5 +67,6 @@
     "layersWithWhiteSpaces": "Some layers on this map contains white spaces on their name and will not appear on the printed pdf.",
     "When": "When?",
     "Where": "Where?",
-    "recordType": "Record type?"
+    "recordType": "Record type?",
+    "mInteractionTool": "Measure"
     }
