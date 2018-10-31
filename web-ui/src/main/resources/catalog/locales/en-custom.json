@@ -68,5 +68,7 @@
     "When": "When?",
     "Where": "Where?",
     "recordType": "Record type?",
-    "mInteractionTool": "Measure"
+    "mInteractionTool": "Measure",
+    "basket": "Saved records",
+    "emptyBasket": "No saved records"
     }

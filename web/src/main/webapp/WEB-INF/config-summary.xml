@@ -150,7 +150,7 @@
             translator="codelist:gmd:MD_MaintenanceFrequencyCode"/>
       <item facet="status" translator="codelist:gmd:MD_ProgressCode"/>
       <item facet="serviceType"/>
-      <item facet="denominator" sortBy="numValue" sortOrder="desc"/>
+      <item facet="denominator" sortBy="value" sortOrder="desc"/>
       <item facet="resolution" sortBy="value" sortOrder="desc"/>
       <!--
       <item facet="region"
@@ -199,8 +199,8 @@
             translator="codelist:gmd:MD_MaintenanceFrequencyCode"/>
       <item facet="status" translator="codelist:gmd:MD_ProgressCode"/>
       <item facet="serviceType"/>
-      <item facet="denominator" sortBy="numValue" sortOrder="desc"/>
-      <item facet="resolution" sortBy="numValue" sortOrder="desc"/>
+      <item facet="denominator" sortBy="value" sortOrder="desc"/>
+      <item facet="resolution" sortBy="value" sortOrder="desc"/>
       <!--<item facet="metadataPOC" max="15"/>-->
     </summaryType>
     <summaryType name="subtemplates">
