@@ -140,8 +140,8 @@
       <!--<item facet="inspireThemeWithAc" sortBy="value" sortOrder="asc" max="35"/>-->
       <item facet="keyword" max="15"/>
       <item facet="orgName" max="25"/>
-      <item facet="sourceCatalog"
-            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/>
+      <!-- <item facet="sourceCatalog"
+            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/> -->
       <item facet="createDateYear" sortBy="value" sortOrder="desc" max="40"/>
       <item facet="format" max="15" sortBy="value" sortOrder="asc"/>
       <item facet="spatialRepresentationType"
@@ -166,8 +166,8 @@
             translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>
       <item facet="mdStatus" max="10" sortBy="value"
             translator="db:org.fao.geonet.repository.StatusValueRepository:findOne:int"/>
-      <item facet="sourceCatalog"
-            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/>
+      <!-- <item facet="sourceCatalog"
+            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/> -->
       <item facet="isValid" max="3" sortBy="value" translator="apploc:validStatus-"/>
       <item facet="groupOwner" max="199" sortBy="value"
             translator="db:org.fao.geonet.repository.GroupRepository:findOne:int"/>
