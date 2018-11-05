@@ -11,7 +11,7 @@
 }
 
 .scottish-logo > a {
-    background: #fff url(/geonetwork/catalog/views/default/images/govscot-linear-transparent.png) no-repeat scroll 0 0;
+    background: url(/geonetwork/catalog/views/default/images/govscot-linear-transparent.png) no-repeat scroll 0 0;
     height: 33px;
     width: 185px;
     background-color: none;
@@ -19,7 +19,18 @@
     margin-top: 4px;
 }
 
-.navbar-default .navbar-nav > li.scottish-logo > a:hover, 
+/* .navbar-default .navbar-nav > li.scottish-logo > a:hover, 
 .navbar-default .navbar-nav > li.scottish-logo > a:focus {
     background-color: #fff
+} */
+
+/* Fix for relations button in search results */
+
+div[gn-grid-related] .btn-group
+ {
+    background: none;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    padding: 5px;
 }
