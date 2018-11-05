@@ -2,12 +2,32 @@
                         xmlns:ows="http://www.opengis.net/ows"
                         version="0.3.1" id="ows-context-ex-1-v3">
   <ows-context:General>
-    <ows:BoundingBox crs="EPSG:3857">
-      <ows:LowerCorner>-8604130.477526832 -320097.07393612247</ows:LowerCorner>
-      <ows:UpperCorner>8948257.201654762 8720263.135408245</ows:UpperCorner>
+    <ows:BoundingBox crs="EPSG:27700">
+<!--       <ows:BoundingBox crs="EPSG:3857"> -->     
+       <ows:LowerCorner>-682855 466783</ows:LowerCorner>
+      <ows:UpperCorner>1222145 1275783</ows:UpperCorner>
+      <!-- <ows:LowerCorner>-8604130.477526832 -320097.07393612247</ows:LowerCorner>
+      <ows:UpperCorner>8948257.201654762 8720263.135408245</ows:UpperCorner> -->
     </ows:BoundingBox>
   </ows-context:General>
   <ows-context:ResourceList>
+  <ows-context:Layer queryable="false" name="ospremium"
+                  hidden="true" opacity="1"
+                  group="Background layers">
+      <ows:Title xmlns:ows="http://www.opengis.net/ows">OS Premium</ows:Title>
+      <ows-context:Server service="urn:ogc:serviceType:WMS">
+          <ows-context:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink"
+           xlink:href="https://t0.ads.astuntechnology.com/spatialdata-gov-scot/ospremium/service?"/>
+      </ows-context:Server>
+      <ows-context:StyleList/>
+  </ows-context:Layer>
+   <!-- <ows-context:Layer name="ospremiumbw" hidden="true" group="Background layers" opacity="1">
+      <ows:Title xmlns:ows="http://www.opengis.net/ows">ADS OS Premium GreyScale</ows:Title>
+      <ows-context:Server service="urn:ogc:serviceType:WMS">
+      <ows-context:OnlineResource xlink:href="https://t0.ads.astuntechnology.com/spatialdata-gov-scot/ospremium/service?" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+      </ows-context:Server>
+    </ows-context:Layer>
+
     <ows-context:Layer name="{type=osm}"
                        group="Background layers"
                        hidden="false"
@@ -31,7 +51,7 @@
                        hidden="true"
                        opacity="1">
       <ows:Title>Stamen Toner</ows:Title>
-    </ows-context:Layer>
+    </ows-context:Layer> -->
     <!--
     Example for TMS:
 
