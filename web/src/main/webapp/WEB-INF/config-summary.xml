@@ -132,7 +132,9 @@
   <summaryTypes>
     <summaryType name="details" format="DIMENSION">
       <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
-      <item facet="mdActions"/>
+      <item facet="category" max="99" sortBy="value"
+              translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>
+      <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
       <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
       <item facet="inspireThemeURI" sortBy="value" sortOrder="asc" max="35"
             translator="term:http://inspire.ec.europa.eu/theme"/>
@@ -144,6 +146,7 @@
             translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/> -->
       <item facet="createDateYear" sortBy="value" sortOrder="desc" max="40"/>
       <item facet="format" max="15" sortBy="value" sortOrder="asc"/>
+      <item facet="mdActions"/>
       <item facet="spatialRepresentationType"
             translator="codelist:gmd:MD_SpatialRepresentationTypeCode"/>
       <item facet="maintenanceAndUpdateFrequency"
