@@ -114,8 +114,10 @@
                 <i class="fa fa-fw fa-cog">&#160;</i>
                 <span><xsl:value-of select="$schemaStrings/providedBy"/></span>
               </h4>
-              <img class="gn-source-logo"
-                   src="{$nodeUrl}../images/logos/{$source}.png" />
+              <!-- <img class="gn-source-logo"
+                   src="{$nodeUrl}../images/logos/{$source}.png" /> -->
+              <img src="{{gnUrl}}..{{md.logo}}"
+               class="gn-source-logo"/>
             </section>
 
             <section class="gn-md-side-social">
