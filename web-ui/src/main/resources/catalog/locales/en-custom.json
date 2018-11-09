@@ -41,7 +41,7 @@
     "legalConstraints": "Limitations on public access",
     "welcomeText": "",
     "searchOver": "Welcome to the SpatialData.gov.scot Metadata Portal, Scotland’s catalogue of spatial data. Here you can find, share and reuse spatial data provided by Scottish public sector organisations. You can explore the data by INSPIRE theme, topic, organisation and geography. Read more about how to use this site in the <a target='_blank' href='http://scottish-sdi-metadata-portal.readthedocs.io'>online documentation</a>. For more information email us at <a href='mailto:SSDI.Metadata@gov.scot?subject='SSDI%20Portal%20Contact' target='_blank'>SSDI.Metadata@gov.scot</a>. This site respects your privacy. See our <a _target='blank' href='https://scottish-sdi-metadata-portal.readthedocs.io/en/3.2.x/privacy.html'>privacy policy</a> to find out more about how we process, handle and protect your personal information while browsing or using this website.",
-    "github": "SSDI Documentation",
+    "github": "Guidance",
     "listOfCategories": "Topic Categories",
     "sourceCatalog": "Source Catalogue",
     "backTomap": "Back to map",
