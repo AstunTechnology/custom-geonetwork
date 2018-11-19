@@ -151,7 +151,7 @@
             translator="codelist:gmd:MD_SpatialRepresentationTypeCode"/>
       <item facet="maintenanceAndUpdateFrequency"
             translator="codelist:gmd:MD_MaintenanceFrequencyCode"/>
-      <item facet="status" translator="codelist:gmd:MD_ProgressCode"/>
+      <!-- <item facet="status" translator="codelist:gmd:MD_ProgressCode"/> -->
       <item facet="serviceType"/>
       <item facet="denominator" sortBy="value" sortOrder="desc"/>
       <item facet="resolution" sortBy="value" sortOrder="desc"/>
@@ -167,8 +167,8 @@
       <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
       <item facet="category" max="99" sortBy="value"
             translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>
-      <item facet="mdStatus" max="10" sortBy="value"
-            translator="db:org.fao.geonet.repository.StatusValueRepository:findOne:int"/>
+      <!-- <item facet="mdStatus" max="10" sortBy="value"
+            translator="db:org.fao.geonet.repository.StatusValueRepository:findOne:int"/> -->
       <!-- <item facet="sourceCatalog"
             translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/> -->
       <item facet="isValid" max="3" sortBy="value" translator="apploc:validStatus-"/>
