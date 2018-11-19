@@ -70,5 +70,6 @@
     "recordType": "Record type?",
     "mInteractionTool": "Measure",
     "basket": "Saved records",
-    "emptyBasket": "No saved records"
+    "emptyBasket": "No saved records",
+    "updatedOn": "Metadata Updated: ",
     }
