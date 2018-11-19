@@ -135,7 +135,6 @@
       <item facet="category" max="99" sortBy="value"
               translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>
       <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
-      <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
       <item facet="inspireThemeURI" sortBy="value" sortOrder="asc" max="35"
             translator="term:http://inspire.ec.europa.eu/theme"/>
       <!--<item facet="inspireTheme" sortBy="value" sortOrder="asc" max="35"/>-->
