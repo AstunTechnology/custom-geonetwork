@@ -208,10 +208,21 @@
                 gnMap.createLayerFromProperties(layerInfo, map)
                   .then(function(layer) {
                     if (layer) {
-                      layer.displayInLayerManager = false;
-                      layer.set("group", "Background layers");
-                      layer.set("fromGNSettings", true);
-                      gnViewerSettings.bgLayers.push(layer);
+
+                      if(map.getLayers().getLength() == 0) {
+                        //We have an empty map, this is going to be our background
+                        layer.displayInLayerManager = false;
+                        layer.background = true;
+                        layer.set('group', 'Background layers');
+                        layer.setVisible(true);
+                        gnViewerSettings.bgLayers = [layer];
+
+                        map.addLayer(layer);
+                        map.getLayers().setAt(0, layer);
+                      } else {
+                        map.addLayer(layer);
+                      }
+                      
                     }
                   });
               });
