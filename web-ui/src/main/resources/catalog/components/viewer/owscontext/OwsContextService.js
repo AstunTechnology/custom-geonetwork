@@ -164,7 +164,11 @@
         }
 
         // load the resources & add additional layers if available
-        var layers = context.resourceList.layer;
+        var layers = [];
+        
+        if(context.resourceList && context.resourceList.layer) {
+          layers = context.resourceList.layer;
+        }
         if (additionalLayers) {
           layers = layers.concat(additionalLayers);
         }
