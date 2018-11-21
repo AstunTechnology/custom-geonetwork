@@ -75,7 +75,12 @@ a[data-gn-click-and-spin="validateInspire()"] {
   }
 
   /* disable option to enable workflow */
-  a[data-ng-if="user.canEditRecord(md) &amp;&amp;md.isWorkflowEnabled()"] {
+  a.ng-scope[data-ng-click="mdService.openUpdateStatusPanel(getScope())"] {
     display:none !important;
   }
+
+  a.ng-scope[data-ng-click="mdService.startWorkflow(md, getCatScope())"] {
+    display:none !important;
+  }
+
 
