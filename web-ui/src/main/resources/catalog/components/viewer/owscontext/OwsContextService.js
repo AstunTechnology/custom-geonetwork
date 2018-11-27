@@ -164,7 +164,11 @@
         }
 
         // load the resources & add additional layers if available
-        var layers = context.resourceList.layer;
+        var layers = [];
+        
+        if(context.resourceList && context.resourceList.layer) {
+          layers = context.resourceList.layer;
+        }
         if (additionalLayers) {
           layers = layers.concat(additionalLayers);
         }
@@ -173,12 +177,13 @@
         var self = this;
         var promises = [];
         var overlays = [];
-        if (angular.isArray(layers)) {
 
-          // ----  Clean bg layers
-          if (map.getLayers().getLength() > 0) {
-            map.getLayers().removeAt(0);
-          }
+        // ----  Clean bg layers
+        if (map.getLayers().getLength() > 0) {
+          map.getLayers().removeAt(0);
+        }
+        
+        if (angular.isArray(layers)) {
           var bgLoadingLayer = new ol.layer.Image({
             loading: true,
             label: 'loading',

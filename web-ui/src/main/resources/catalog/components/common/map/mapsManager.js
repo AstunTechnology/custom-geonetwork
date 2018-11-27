@@ -208,10 +208,34 @@
                 gnMap.createLayerFromProperties(layerInfo, map)
                   .then(function(layer) {
                     if (layer) {
-                      layer.displayInLayerManager = false;
-                      layer.set("group", "Background layers");
+
+                      if(gnViewerSettings.bgLayers.length == 0) {
+                        //We have an empty map, this is going to be our background
+                        layer.displayInLayerManager = false;
+                        layer.background = true;
+                        layer.set('group', 'Background layers');
+                        layer.setVisible(true);
+                        layer.set("currentBackground", true);
+                        
+                        //Do we have any loading background layer?
+                        if(map.getLayers().getLength() > 0) {
+                          map.getLayers().removeAt(0);
+                        }
+                        
+                        //Add our layer as default background
+                        gnViewerSettings.bgLayers = [layer];
+                        map.addLayer(layer);
+                        map.getLayers().setAt(0, layer);
+                      } else if(layer.get('group') == 'Background layers') {
+                        layer.displayInLayerManager = false;
+                        layer.background = true;
+                        gnViewerSettings.bgLayers.push(layer);
+                      } else {
+                        map.addLayer(layer);
+                      }
+                      
+                      
                       layer.set("fromGNSettings", true);
-                      gnViewerSettings.bgLayers.push(layer);
                     }
                   });
               });
