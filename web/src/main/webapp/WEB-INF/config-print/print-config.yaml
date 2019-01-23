@@ -213,7 +213,7 @@ layouts:
   landscape:
     mainPage:
       rotation: false
-      pageSize: LEGAL
+      pageSize: A4
       landscape: true
       backgroundPdf: '${configDir}/template-landscape.pdf'
       items:
