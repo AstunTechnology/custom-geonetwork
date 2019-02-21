@@ -1280,14 +1280,15 @@
     <xsl:param name="editInfo"/>
     <xsl:param name="parentEditInfo" required="no"/>
     <xsl:if
-      test="($parentEditInfo and
-                     ($parentEditInfo/@del = 'true' or
-                     $parentEditInfo/@min != 1)
-                   ) or
-                   (not($parentEditInfo) and ($editInfo and
-                   ($editInfo/@del = 'true' or
-                   $editInfo/@min != 1)
-                   ))">
+      test="(($parentEditInfo and (
+              $parentEditInfo/@del = 'true' or
+              $parentEditInfo/@min != 1)
+            ) or (
+              not($parentEditInfo) and $editInfo and (
+                $editInfo/@del = 'true' or
+                $editInfo/@min != 1
+              )
+            )) and not($isRequired and ($editInfo and $editInfo/@max and $editInfo/@max = 1) and ($parentEditInfo and $parentEditInfo/@max and $parentEditInfo/@max = 1))">
 
       <xsl:variable name="elementToRemove" select="if ($parentEditInfo) then
         $parentEditInfo else $editInfo"/>
