@@ -1,5 +1,5 @@
 <div>
-  <label class="control-label col-xs-2">{{label}}</label>
+  <label class="control-label col-xs-2" data-ng-class="required ? 'gn-required' : ''">{{label}}</label>
   <div class="col-xs-10">
     <!-- The hidden field with the value. -->
     <input type="hidden" class="form-control" name="{{ref}}" value="{{value}}"/>

@@ -52,7 +52,8 @@
            scope: {
              values: '@gnTopiccategorySelector',
              label: '@label',
-             ref: '@ref'
+             ref: '@ref',
+             required: '@required'
            },
            templateUrl: '../../catalog/components/edit/topiccategory/partials/' +
            'topiccategory.html',
