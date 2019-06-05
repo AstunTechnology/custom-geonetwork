@@ -13,3 +13,11 @@
 [submodule "docs/manuals"]
 	path = docs/manuals
 	url = https://github.com/geonetwork/doc.git
+[submodule "schemas/iso19139.gemini22"]
+	path = schemas/iso19139.gemini22
+	url = git@github.com:AstunTechnology/iso19139.gemini22_gn3.git
+	branch = 3.4.x
+[submodule "schemas/iso19139.gemini23"]
+	path = schemas/iso19139.gemini23
+	url = git@github.com:AstunTechnology/iso19139.gemini23.git
+	branch = 3.4.x
