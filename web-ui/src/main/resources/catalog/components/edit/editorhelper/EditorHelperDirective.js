@@ -58,8 +58,19 @@
         link: function(scope, element, attrs) {
           // Retrieve the target field by name (general case)
           // or by id (template mode field).
-          var field = document.gnEditor[scope.ref] || $('#' + scope.ref).get(O),
-              relatedAttributeField = document.gnEditor[scope.relatedAttr],
+          var field = document.gnEditor[scope.ref];
+          if (field == undefined && ($('#' + scope.ref).length > 0)) {
+            field = $('#' + scope.ref).get(O);
+          }
+
+          // For suggestions in attributes of empty elements where is only rendered the attribute, like
+          //    <gmd:verticalCRS xlink:href="http://www.opengis.net/def/crs/EPSG/0/5702"/>
+          // Use the field for the attribute.
+          if ((field == undefined) && (angular.isDefined(scope.relatedAttr)) && (scope.relatedAttr != '')) {
+            field = document.gnEditor[scope.relatedAttr.replace(":", "COLON")];
+          }
+
+          var relatedAttributeField = document.gnEditor[scope.relatedAttr],
               relatedElementField = document.gnEditor[scope.relatedElement],
               initialValue = field.value;
 
