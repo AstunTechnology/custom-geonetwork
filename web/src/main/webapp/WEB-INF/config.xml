@@ -100,7 +100,7 @@
             interested for having metadata in a specific
             ISO profil.
         -->
-    <param name="preferredSchema" value="iso19139"/>
+    <param name="preferredSchema" value="iso19139.gemini23"/>
     <param name="jzkitConfig" value="JZkitApplicationContext.xml"/>
     <param name="metadataNotifierConfig" value="WEB-INF/config-notifier.xml"/>
 
