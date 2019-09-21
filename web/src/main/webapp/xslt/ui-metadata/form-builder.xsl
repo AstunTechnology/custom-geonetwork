@@ -66,6 +66,11 @@
     <!-- The AngularJS directive name eg. gn-field-duration -->
     <xsl:param name="directive" required="no" as="xs:string" select="''"/>
 
+    <!-- The AngularJS attribute(s) directive.
+    The type parameter contains the directive name. -->
+    <xsl:param name="directiveAttributes" required="no" select="''"/>
+
+
     <xsl:param name="hidden" required="no" as="xs:boolean" select="false()"/>
     <xsl:param name="editInfo" required="no"/>
     <xsl:param name="parentEditInfo" required="no"/>
@@ -128,9 +133,8 @@
         -->
     <xsl:choose>
       <xsl:when test="$directive != ''">
-        <div class="form-group gn-field" id="gn-el-{$editInfo/@ref}">
-          <!-- The DIV directive MUST populate the 11 slot of space available-->
-          <span>
+        <div class="form-group" id="gn-el-{$editInfo/@ref}">
+          <div class="col-lg-10">
             <xsl:choose>
               <xsl:when test="$isMultilingual">
                 <xsl:attribute name="data-{$directive}">
@@ -149,11 +153,10 @@
               </xsl:otherwise>
             </xsl:choose>
 
-            <xsl:attribute name="data-required" select="$isRequired"/>
             <xsl:attribute name="data-ref" select="concat('_', $editInfo/@ref)"/>
             <xsl:attribute name="data-label" select="$label/label"/>
-	        </span>
-          <div class="col-sm-1 gn-control">
+          </div>
+          <div class="col-lg-2 gn-control">
             <xsl:if test="not($isDisabled)">
               <xsl:call-template name="render-form-field-control-remove">
                 <xsl:with-param name="editInfo" select="$editInfo"/>
@@ -164,128 +167,131 @@
         </div>
       </xsl:when>
       <xsl:otherwise>
+
         <div
-        class="form-group gn-field gn-{substring-after(name(), ':')} {if ($isRequired) then 'gn-required' else ''} {if ($label/condition) then concat('gn-', $label/condition) else ''} {if ($isFirst) then '' else 'gn-extra-field'}"
-        id="gn-el-{$editInfo/@ref}"
-        data-gn-field-highlight="">
-        <label
-          for="gn-field-{$editInfo/@ref}"
-          class="col-sm-2 control-label">
-          <xsl:value-of select="$label/label"/>
-        </label>
+          class="form-group gn-field gn-{substring-after(name(), ':')} {if ($isRequired) then 'gn-required' else ''} {if ($label/condition) then concat('gn-', $label/condition) else ''} {if ($isFirst) then '' else 'gn-extra-field'}"
+          id="gn-el-{$editInfo/@ref}"
+          data-gn-field-highlight="">
+          <label
+            for="gn-field-{$editInfo/@ref}"
+            class="col-sm-2 control-label">
+            <xsl:value-of select="$label/label"/>
+          </label>
 
-        <div class="col-sm-9 gn-value nopadding-in-table">
-          <xsl:if test="$isMultilingual">
-            <xsl:attribute name="data-gn-multilingual-field"
-               select="$metadataOtherLanguagesAsJson"/>
-            <xsl:attribute name="data-main-language" select="$metadataLanguage"/>
-            <xsl:attribute name="data-expanded" select="$toggleLang"/>
-          </xsl:if>
+          <div class="col-sm-9 gn-value nopadding-in-table">
+            <xsl:if test="$isMultilingual">
+              <xsl:attribute name="data-gn-multilingual-field"
+                             select="$metadataOtherLanguagesAsJson"/>
+              <xsl:attribute name="data-main-language" select="$metadataLanguage"/>
+              <xsl:attribute name="data-expanded" select="$toggleLang"/>
+            </xsl:if>
 
-          <xsl:variable name="mainLangCode"
-            select="upper-case(java-xsl-util:twoCharLangCode($metadataLanguage, substring($metadataLanguage,0,2)))"/>
+            <xsl:variable name="mainLangCode"
+                          select="upper-case(java-xsl-util:twoCharLangCode($metadataLanguage, substring($metadataLanguage,0,2)))"/>
 
-          <xsl:choose>
-            <xsl:when test="$isMultilingual">
+            <xsl:choose>
+              <xsl:when test="$isMultilingual">
 
-        <xsl:variable name="tooltip"
-                select="concat($schema, '|', name(.), '|', name(..), '|', $xpath)"></xsl:variable>
+                <xsl:variable name="tooltip"
+                              select="concat($schema, '|', name(.), '|', name(..), '|', $xpath)"></xsl:variable>
 
-        <xsl:for-each select="$value/values/value">
-          <xsl:sort select="@lang"/>
-          <xsl:if test="@lang != ''">
-            <xsl:call-template name="render-form-field">
-              <xsl:with-param name="name" select="@ref"/>
-              <xsl:with-param name="lang" select="@lang"/>
-              <xsl:with-param name="value" select="."/>
-              <xsl:with-param name="type" select="$type"/>
-              <xsl:with-param name="tooltip" select="$tooltip"/>
-              <xsl:with-param name="isRequired" select="$isRequired"/>
-              <xsl:with-param name="isReadOnly" select="$isReadOnly"/>
-              <xsl:with-param name="isDisabled" select="$isDisabled"/>
-              <xsl:with-param name="editInfo" select="$editInfo"/>
-              <xsl:with-param name="parentEditInfo" select="$parentEditInfo"/>
-              <!--  Helpers can't be provided for all languages
-              <xsl:with-param name="listOfValues" select="$listOfValues"/>
-              -->
-              <xsl:with-param name="checkDirective"
-                  select="upper-case(@lang) = $mainLangCode or normalize-space(@lang) = ''"/>
-            </xsl:call-template>
-          </xsl:if>
-        </xsl:for-each>
-
-        <!-- Display the helper for a multilingual field below the field.
-         The helper will be used only to populate the main language. -->
-        <xsl:if test="count($listOfValues/*) > 0">
-          <xsl:call-template name="render-form-field-helper">
-            <xsl:with-param name="elementRef" select="concat('_', $editInfo/@ref)"/>
-            <!-- The @rel attribute in the helper may define a related field
-            to update. Check the related element of the current element
-            which should be in the sibbling axis. -->
-            <xsl:with-param name="relatedElement"
-                select="concat('_',
-          following-sibling::*[name() = $listOfValues/@rel]/*[1]/gn:element/@ref)"/>
-            <!-- Related attribute name is based on element name
-            _<element_ref>_<attribute_name>. -->
-            <xsl:with-param name="relatedElementRef"
-                select="concat('_', $editInfo/@ref, '_', $listOfValues/@relAtt)"/>
-            <xsl:with-param name="dataType" select="$type"/>
-            <xsl:with-param name="listOfValues" select="$listOfValues"/>
-            <xsl:with-param name="tooltip" select="$tooltip"/>
-            <xsl:with-param name="multilingualField" select="true()"/>
-          </xsl:call-template>
-        </xsl:if>
-            </xsl:when>
-            <xsl:otherwise>
-        <xsl:call-template name="render-form-field">
-          <xsl:with-param name="name" select="$name"/>
-          <xsl:with-param name="value" select="$value"/>
-          <xsl:with-param name="type" select="$type"/>
-          <xsl:with-param name="tooltip"
-              select="concat($schema, '|', name(.), '|', name(..), '|', $xpath)"/>
-          <xsl:with-param name="isRequired" select="$isRequired"/>
-          <xsl:with-param name="isDisabled" select="$isDisabled"/>
-          <xsl:with-param name="isReadOnly" select="$isReadOnly"/>
-          <xsl:with-param name="editInfo" select="$editInfo"/>
-          <xsl:with-param name="parentEditInfo" select="$parentEditInfo"/>
-          <xsl:with-param name="listOfValues" select="$listOfValues"/>
-        </xsl:call-template>
-            </xsl:otherwise>
-          </xsl:choose>
-
-
-          <xsl:call-template name="render-form-field-control-move">
-            <xsl:with-param name="elementEditInfo" select="$parentEditInfo"/>
-            <xsl:with-param name="domeElementToMoveRef" select="$editInfo/@ref"/>
-          </xsl:call-template>
-
-          <xsl:if test="$attributesSnippet">
-            <xsl:variable name="cssDefaultClass" select="'well well-sm'"/>
-            <div class="{$cssDefaultClass}
-        {if ($forceDisplayAttributes) then 'gn-attr-mandatory' else 'gn-attr'}
-        {if ($isDisplayingAttributes = true() or $forceDisplayAttributes = true()) then '' else 'hidden'}">
-        <xsl:copy-of select="$attributesSnippet"/>
-
-            </div>
-                  </xsl:if>
-
-                  <xsl:if test="$errors">
-                    <xsl:for-each select="$errors/errors/error">
-                      <span class="help-block text-danger">
-                        <xsl:value-of select="."/>
-                      </span>
-                    </xsl:for-each>
-                  </xsl:if>
-                </div>
-                <div class="col-sm-1 gn-control">
-                  <xsl:if test="not($isDisabled)">
-                    <xsl:call-template name="render-form-field-control-remove">
+                <xsl:for-each select="$value/values/value">
+                  <xsl:sort select="@lang"/>
+                  <xsl:if test="@lang != ''">
+                    <xsl:call-template name="render-form-field">
+                      <xsl:with-param name="name" select="@ref"/>
+                      <xsl:with-param name="lang" select="@lang"/>
+                      <xsl:with-param name="value" select="."/>
+                      <xsl:with-param name="type" select="$type"/>
+                      <xsl:with-param name="directiveAttributes" select="$directiveAttributes"/>
+                      <xsl:with-param name="tooltip" select="$tooltip"/>
+                      <xsl:with-param name="isRequired" select="$isRequired"/>
+                      <xsl:with-param name="isReadOnly" select="$isReadOnly"/>
+                      <xsl:with-param name="isDisabled" select="$isDisabled"/>
                       <xsl:with-param name="editInfo" select="$editInfo"/>
                       <xsl:with-param name="parentEditInfo" select="$parentEditInfo"/>
+                      <!--  Helpers can't be provided for all languages
+                      <xsl:with-param name="listOfValues" select="$listOfValues"/>
+                      -->
+                      <xsl:with-param name="checkDirective"
+                                      select="upper-case(@lang) = $mainLangCode or normalize-space(@lang) = ''"/>
                     </xsl:call-template>
                   </xsl:if>
-                </div>
+                </xsl:for-each>
+
+                <!-- Display the helper for a multilingual field below the field.
+                 The helper will be used only to populate the main language. -->
+                <xsl:if test="count($listOfValues/*) > 0">
+                  <xsl:call-template name="render-form-field-helper">
+                    <xsl:with-param name="elementRef" select="concat('_', $editInfo/@ref)"/>
+                    <!-- The @rel attribute in the helper may define a related field
+                    to update. Check the related element of the current element
+                    which should be in the sibbling axis. -->
+                    <xsl:with-param name="relatedElement"
+                                    select="concat('_',
+                        following-sibling::*[name() = $listOfValues/@rel]/*[1]/gn:element/@ref)"/>
+                    <!-- Related attribute name is based on element name
+                    _<element_ref>_<attribute_name>. -->
+                    <xsl:with-param name="relatedElementRef"
+                                    select="concat('_', $editInfo/@ref, '_', $listOfValues/@relAtt)"/>
+                    <xsl:with-param name="dataType" select="$type"/>
+                    <xsl:with-param name="listOfValues" select="$listOfValues"/>
+                    <xsl:with-param name="tooltip" select="$tooltip"/>
+                    <xsl:with-param name="multilingualField" select="true()"/>
+                  </xsl:call-template>
+                </xsl:if>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:call-template name="render-form-field">
+                  <xsl:with-param name="name" select="$name"/>
+                  <xsl:with-param name="value" select="$value"/>
+                  <xsl:with-param name="type" select="$type"/>
+                  <xsl:with-param name="directiveAttributes" select="$directiveAttributes"/>
+                  <xsl:with-param name="tooltip"
+                                  select="concat($schema, '|', name(.), '|', name(..), '|', $xpath)"/>
+                  <xsl:with-param name="isRequired" select="$isRequired"/>
+                  <xsl:with-param name="isDisabled" select="$isDisabled"/>
+                  <xsl:with-param name="isReadOnly" select="$isReadOnly"/>
+                  <xsl:with-param name="editInfo" select="$editInfo"/>
+                  <xsl:with-param name="parentEditInfo" select="$parentEditInfo"/>
+                  <xsl:with-param name="listOfValues" select="$listOfValues"/>
+                </xsl:call-template>
+              </xsl:otherwise>
+            </xsl:choose>
+
+
+            <xsl:call-template name="render-form-field-control-move">
+              <xsl:with-param name="elementEditInfo" select="$parentEditInfo"/>
+              <xsl:with-param name="domeElementToMoveRef" select="$editInfo/@ref"/>
+            </xsl:call-template>
+
+            <xsl:if test="$attributesSnippet">
+              <xsl:variable name="cssDefaultClass" select="'well well-sm'"/>
+              <div class="{$cssDefaultClass}
+                {if ($forceDisplayAttributes) then 'gn-attr-mandatory' else 'gn-attr'}
+                {if ($isDisplayingAttributes = true() or $forceDisplayAttributes = true()) then '' else 'hidden'}">
+                <xsl:copy-of select="$attributesSnippet"/>
+
               </div>
+            </xsl:if>
+
+            <xsl:if test="$errors">
+              <xsl:for-each select="$errors/errors/error">
+                <span class="help-block text-danger">
+                  <xsl:value-of select="."/>
+                </span>
+              </xsl:for-each>
+            </xsl:if>
+          </div>
+          <div class="col-sm-1 gn-control">
+            <xsl:if test="not($isDisabled)">
+              <xsl:call-template name="render-form-field-control-remove">
+                <xsl:with-param name="editInfo" select="$editInfo"/>
+                <xsl:with-param name="parentEditInfo" select="$parentEditInfo"/>
+              </xsl:call-template>
+            </xsl:if>
+          </div>
+        </div>
       </xsl:otherwise>
     </xsl:choose>
 
@@ -968,6 +974,7 @@
     <xsl:param name="lang" required="no"/>
     <xsl:param name="hidden"/>
     <xsl:param name="type"/>
+    <xsl:param name="directiveAttributes"/>
     <xsl:param name="tooltip" required="no"/>
     <xsl:param name="isRequired"/>
     <xsl:param name="isDisabled"/>
@@ -1114,17 +1121,59 @@
         <xsl:variable name="isTextareaDirective"
                       select="$isDirective and contains($type, '-textarea')"/>
 
-        <xsl:variable name="textareaOrInput">
-          <xsl:element name="{if ($isTextareaDirective) then 'textarea' else 'input'}">
+        <!-- TODO: Standardize the naming to use div container, currently used for data-gn-checkbox-with-nilreason -->
+        <xsl:variable name="isDivDirective"
+                      select="$isDirective and contains($type, '-checkbox')"/>
+
+        <xsl:variable name="contentSnippet">
+          <xsl:element name="{if ($isDivDirective) then 'div' else if ($isTextareaDirective) then 'textarea' else 'input'}">
+
             <xsl:attribute name="class"
-                           select="concat('form-control ', if ($lang) then 'hidden' else '')"/>
+                           select="concat(if ($isDivDirective) then '' else 'form-control ', if ($lang) then 'hidden' else '')"/>
+
             <xsl:attribute name="id"
                            select="concat('gn-field-', $editInfo/@ref)"/>
+
+            <xsl:if test="not($isDirective)">
             <xsl:attribute name="name"
                            select="concat('_', $name)"/>
-            <xsl:if test="$isDirective">
-              <xsl:attribute name="{$type}"/>
             </xsl:if>
+
+            <xsl:if test="$isDirective">
+              <xsl:attribute name="data-element-ref"
+                             select="concat('_X', $editInfo/@parent, '_replace')"/>
+
+              <xsl:attribute name="{$type}">
+                <xsl:value-of
+                  select="."/>
+              </xsl:attribute>
+
+              <xsl:message>directive::::: <xsl:copy-of select="$type" /> </xsl:message>
+              <xsl:message>directiveAttributes::::: <xsl:copy-of select="$directiveAttributes" />
+            </xsl:message>
+              <xsl:if test="$directiveAttributes instance of node()+">
+
+                <xsl:variable name="node" select="." />
+
+                <xsl:for-each select="$directiveAttributes//attribute::*">
+                  <xsl:choose>
+                    <xsl:when test="starts-with(., 'eval#')">
+                      <xsl:attribute name="{name()}">
+                        <saxon:call-template name="{concat('evaluate-', $schema)}">
+                          <xsl:with-param name="base" select="$node"/>
+                          <xsl:with-param name="in" select="concat('/', substring-after(., 'eval#'))"/>
+                        </saxon:call-template>
+                      </xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:copy-of select="."/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:for-each>
+
+              </xsl:if>
+            </xsl:if>
+
             <xsl:if test="$tooltip">
               <xsl:attribute name="data-gn-field-tooltip" select="$tooltip"/>
             </xsl:if>
@@ -1164,7 +1213,7 @@
             </xsl:choose>
           </xsl:element>
         </xsl:variable>
-        <xsl:copy-of select="$textareaOrInput"/>
+        <xsl:copy-of select="$contentSnippet"/>
 
       </xsl:otherwise>
     </xsl:choose>
@@ -1279,17 +1328,15 @@
   <xsl:template name="render-form-field-control-remove">
     <xsl:param name="editInfo"/>
     <xsl:param name="parentEditInfo" required="no"/>
-    <xsl:param name="isRequired"/>
     <xsl:if
-      test="(($parentEditInfo and (
-              $parentEditInfo/@del = 'true' or
-              $parentEditInfo/@min != 1)
-            ) or (
-              not($parentEditInfo) and $editInfo and (
-                $editInfo/@del = 'true' or
-                $editInfo/@min != 1
-              )
-            )) and not($isRequired and ($editInfo and $editInfo/@max and $editInfo/@max = 1) and ($parentEditInfo and $parentEditInfo/@max and $parentEditInfo/@max = 1))">
+      test="($parentEditInfo and
+                     ($parentEditInfo/@del = 'true' or
+                     $parentEditInfo/@min != 1)
+                   ) or
+                   (not($parentEditInfo) and ($editInfo and
+                   ($editInfo/@del = 'true' or
+                   $editInfo/@min != 1)
+                   ))">
 
       <xsl:variable name="elementToRemove" select="if ($parentEditInfo) then
         $parentEditInfo else $editInfo"/>
@@ -1358,7 +1405,7 @@
 
     <xsl:variable name="directive"
                   select="gn-fn-metadata:getFieldType($editorConfig, name(),
-      name(..))"/>
+      name(..), '')"/>
 
     <!-- Form field name escaping ":" which will be invalid character for
     Jeeves request parameters. -->
