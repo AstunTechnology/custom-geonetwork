@@ -221,7 +221,7 @@
     <xsl:template mode="index" match="gmd:DQ_ConformanceResult[count(ancestor::node()) =  1]">
         <Field name="_title"
                string="{if ($title != '') then $title
-                        else gmd:specification/gmd:CI_Citation/gmd:title/gmx:Anchor}"
+                        else gmd:explanation/gco:CharacterString}"
                store="true" index="true"/>
 
         <xsl:call-template name="subtemplate-common-fields"/>
