@@ -73,4 +73,6 @@
     "basket": "Saved records",
     "emptyBasket": "No saved records",
     "updatedOn": "Metadata Updated: ",
+    "gmd:CI_ResponsibleParty": "Organisations & Contacts",
+    "gmd:DQ_ConformanceResult": "Conformance Reports"
     }
