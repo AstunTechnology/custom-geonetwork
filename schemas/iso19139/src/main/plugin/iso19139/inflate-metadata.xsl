@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
                   xmlns:gco="http://www.isotc211.org/2005/gco"
@@ -19,6 +18,29 @@
 
       <gco:Boolean></gco:Boolean>
     </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="gmd:MD_Distribution">
+    <xsl:copy>
+      <xsl:copy-of select="@*" />
+
+      <xsl:copy-of select="gmd:distributionFormat" />
+      <xsl:if test="not(gmd:distributionFormat)" >
+        <gmd:distributionFormat>
+            <gmd:MD_Format>
+               <gmd:name>
+                  <gco:CharacterString xmlns:gco="http://www.isotc211.org/2005/gco"></gco:CharacterString>
+               </gmd:name>
+               <gmd:version>
+                  <gco:CharacterString xmlns:gco="http://www.isotc211.org/2005/gco"></gco:CharacterString>
+               </gmd:version>
+            </gmd:MD_Format>
+         </gmd:distributionFormat>
+      </xsl:if>
+      <xsl:copy-of select="gmd:transferOptions" />
+
+    </xsl:copy>
+
   </xsl:template>
 
 

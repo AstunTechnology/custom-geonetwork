@@ -39,6 +39,7 @@
   <advanced>Full</advanced>
   <default>Simple</default>
   <simple>Simple</simple>
+  <nonspatial>Non-spatial</nonspatial>
   <inspire>INSPIRE</inspire>
   <inspire_sds>SDS</inspire_sds>
 
@@ -228,4 +229,8 @@
 
   <sds-section-custodian>Responsible custodian</sds-section-custodian>
   <sds-addOperation>Add Operation</sds-addOperation>
+  <addDistFormat>Distribution Format</addDistFormat>
+  <addDistFormatText>Text</addDistFormatText>
+  <addDistFormatCSV>CSV</addDistFormatCSV>
+  <distributionFormat>Distribution Format</distributionFormat>
 </strings>

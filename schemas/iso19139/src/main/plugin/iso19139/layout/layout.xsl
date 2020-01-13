@@ -234,8 +234,7 @@
       <xsl:with-param name="attributesSnippet" select="$attributes"/>
       <xsl:with-param name="forceDisplayAttributes" select="true()" />
       <xsl:with-param name="type"
-                      select="gn-fn-metadata:getFieldType($editorConfig, name(),
-            name(gmx:Anchor), $xpath)"/>
+                      select="gn-fn-metadata:getFieldType($editorConfig, name(),name(gmx:Anchor),$xpath)"/>
       <xsl:with-param name="name" select="if ($isEditing) then */gn:element/@ref else ''"/>
       <xsl:with-param name="editInfo" select="*/gn:element"/>
       <xsl:with-param name="parentEditInfo"
@@ -402,8 +401,7 @@
       <xsl:with-param name="xpath" select="$xpath"/>
       <xsl:with-param name="attributesSnippet" select="$attributes"/>
       <xsl:with-param name="type"
-                      select="gn-fn-metadata:getFieldType($editorConfig, name(),
-        name($theElement), $xpath)"/>
+                      select="gn-fn-metadata:getFieldType($editorConfig, name(), name($theElement), $xpath)"/>
       <xsl:with-param name="directiveAttributes">
         <xsl:copy-of select="gn-fn-metadata:getFieldDirective($editorConfig, name(), name($theElement), $xpath)"/>
       </xsl:with-param>
@@ -426,7 +424,6 @@
     those values. -->
   <xsl:template mode="mode-iso19139" match="@uuidref" priority="2000">
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
-
     <xsl:call-template name="render-element">
       <xsl:with-param name="label"
                       select="gn-fn-metadata:getLabel($schema, name(..), $labels)"/>
@@ -445,7 +442,6 @@
 
   <xsl:template mode="mode-iso19139" match="gco:ScopedName|gco:LocalName">
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
-
     <xsl:call-template name="render-element">
       <xsl:with-param name="label"
                       select="gn-fn-metadata:getLabel($schema, name(.), $labels)"/>
@@ -586,7 +582,6 @@
     <xsl:variable name="helper" select="gn-fn-metadata:getHelper($labelConfig/helper, .)"/>
 
     <xsl:variable name="added" select="parent::node()/parent::node()/@gn:addedObj"/>
-
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
 
     <xsl:call-template name="render-element">
