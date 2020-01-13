@@ -3086,7 +3086,7 @@
 
     </view>
 
-    <view name="default" >
+    <view name="default" displayIfRecord="not(contains(gmd:MD_Metadata/gmd:hierarchyLevelName/gco:CharacterString,'NonGeographicDataset'))" >
       <sidePanel>
         <directive data-gn-onlinesrc-list=""/>
         <directive gn-geo-publisher=""
@@ -3242,7 +3242,7 @@
 
     <!-- simplified non-spatial view -->
 
-    <view name="nonspatial" hideTimeInCalendar="true" displayIfRecord="contains(gmd:MD_Metadata/gmd:hierarchyLevelName/gco:CharacterString,'NonGeographicDataset')">
+    <view name="nonspatial" hideTimeInCalendar="true" default="true" displayIfRecord="contains(gmd:MD_Metadata/gmd:hierarchyLevelName/gco:CharacterString,'NonGeographicDataset')">
       <sidePanel>
         <directive data-gn-onlinesrc-list=""/>
         <directive gn-geo-publisher=""
@@ -3258,70 +3258,48 @@
         <section name="identificationInfo">
           <field
             xpath="/gmd:MD_Metadata/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:title"/>
+            <text ref="title_help"/>
             <field
             xpath="/gmd:MD_Metadata/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:alternatetitle"/>
+            <text ref="alttitle_help"/>
             <field
             xpath="/gmd:MD_Metadata/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:date"/>
+            <text ref="creationdate_help"/>
             <field
             xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract"/>
+            <text ref="abstract_help"/>
             <field
             xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact"/>
+            <text ref="pointofcontact_help"/>
             <field
             xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency"/>
+            <text ref="updatefreq_help"/>
             <field
             xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords"/>
+            <text ref="keywords_help"/>
             <field
             xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:topicCategory"/>
+            <text ref="topiccategory_help"/>
             <field
             xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement"/>
+            <text ref="tempextent_help"/>
           
         </section>
         <section name="gmd:distributionInfo">
-            <field xpath="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat">
-                  <!-- <template>
-                    <values>
-                      <key label="Name"
-                        required="true"
-                        xpath="gmd:name"/>
-                      </values>
-                    <snippet>
-                      <gmd:distributionFormat>
-                        <gmd:MD_Format>
-                          <gmd:name>
-                            <gco:CharacterString>{{name}}</gco:CharacterString>
-                          </gmd:name>
-                          <gmd:version>
-                            <gco:CharacterString>unknown</gco:CharacterString>
-                          </gmd:version>
-                        </gmd:MD_Format>
-                      </gmd:distributionFormat>
-                    </snippet>
-                  </template> -->
-                  
-              <!-- <action type="add" btnLabel="addDistFormat"
+            <field name = "distributionFormat" xpath="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat"
+                or="distributionFormat" in="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution">
+                  <!-- <action type="add" btnLabel="addDistFormat"
                   name="name" or="name"
                   in="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution">
                   <template>
-                    <snippet label="addDistFormatText">
+                    <snippet label="addDistFormat">
                       <gmd:distributionFormat>
                         <gmd:MD_Format>
                           <gmd:name>
-                            <gco:CharacterString>Text</gco:CharacterString>
+                            <gco:CharacterString></gco:CharacterString>
                           </gmd:name>
                           <gmd:version>
-                            <gco:CharacterString>unknown</gco:CharacterString>
-                          </gmd:version>
-                        </gmd:MD_Format>
-                      </gmd:distributionFormat>
-                    </snippet>
-                    <snippet label="addDistFormatCSV">
-                      <gmd:distributionFormat>
-                        <gmd:MD_Format>
-                          <gmd:name>
-                            <gco:CharacterString>CSV</gco:CharacterString>
-                          </gmd:name>
-                          <gmd:version>
-                            <gco:CharacterString>unknown</gco:CharacterString>
+                            <gco:CharacterString></gco:CharacterString>
                           </gmd:version>
                         </gmd:MD_Format>
                       </gmd:distributionFormat>
@@ -3329,36 +3307,18 @@
                   </template>
                 </action> -->
               </field>
+              <text ref="distributionformat_help"/>
             <section xpath="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions
                     /gmd:MD_DigitalTransferOptions/gmd:onLine"/>
+                    <text ref="onlineresource_help"/>
 
         </section>
         <section name="gmd:lineage" >
           <field name="lineage"
                  xpath="/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement"/>
+                 <text ref="lineage_help"/>
         </section>
-        <!-- <section name="gmd:MD_Metadata">
-          <field xpath="/gmd:MD_Metadata/gmd:fileIdentifier"/>
-          <field xpath="/gmd:MD_Metadata/gmd:language" or="language" in="/gmd:MD_Metadata"/>
-          <field xpath="/gmd:MD_Metadata/gmd:characterSet"/>
-          <field xpath="/gmd:MD_Metadata/gmd:parentIdentifier" or="parentIdentifier"
-                 in="/gmd:MD_Metadata"/>
-          <field xpath="/gmd:MD_Metadata/gmd:hierarchyLevel" or="hierarchyLevel"
-                 in="/gmd:MD_Metadata"/>
-          <field xpath="/gmd:MD_Metadata/gmd:hierarchyLevelName" or="hierarchyLevelName"
-                 in="/gmd:MD_Metadata"/>
-          <field xpath="/gmd:MD_Metadata/gmd:dateStamp"/>
-          <field xpath="/gmd:MD_Metadata/gmd:metadataStandardName"/>
-          <field xpath="/gmd:MD_Metadata/gmd:metadataStandardVersion"/>
-          <field xpath="/gmd:MD_Metadata/gmd:contact" or="contact" in="/gmd:MD_Metadata"/>
-          <field xpath="/gmd:MD_Metadata/gmd:dataSetURI" or="dataSetURI" in="/gmd:MD_Metadata"/>
-          <field xpath="/gmd:MD_Metadata/gmd:locale" or="locale" in="/gmd:MD_Metadata"/>
-          <field xpath="/gmd:MD_Metadata/gmd:series"/>
-          <field xpath="/gmd:MD_Metadata/gmd:describes"/>
-          <field xpath="/gmd:MD_Metadata/gmd:propertyType"/>
-          <field xpath="/gmd:MD_Metadata/gmd:featureType"/>
-          <field xpath="/gmd:MD_Metadata/gmd:featureAttribute"/>
-        </section> -->
+
       </tab>
 
       <!-- Elements that should not use the "flat" mode -->

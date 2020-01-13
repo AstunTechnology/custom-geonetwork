@@ -229,8 +229,43 @@
 
   <sds-section-custodian>Responsible custodian</sds-section-custodian>
   <sds-addOperation>Add Operation</sds-addOperation>
-  <addDistFormat>Distribution Format</addDistFormat>
-  <addDistFormatText>Text</addDistFormatText>
-  <addDistFormatCSV>CSV</addDistFormatCSV>
-  <distributionFormat>Distribution Format</distributionFormat>
+  <distributionFormat>Add Distribution Format</distributionFormat>
+
+  <!-- help strings for non-spatial -->
+  <title_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">The title of the resource (mandatory)</p></div></div></title_help>
+  <alttitle_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">An alternative title for the resource (optional)</p></div></div></alttitle_help>
+  <creationdate_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">The date the resource was created (mandatory)</p></div></div></creationdate_help>
+  <abstract_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">A description of the resource (mandatory)</p></div></div></abstract_help>
+  <pointofcontact_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">The point(s) of contact for the resource (mandatory)</p></div></div></pointofcontact_help>
+  <updatefreq_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">The frequency at which the resource is updated. Choose from the dropdown list (mandatory)</p></div></div></updatefreq_help>
+  <keywords_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">Keywords describing the resource (optional)</p></div></div></keywords_help>
+  <topiccategory_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">A topic for the resource (optional)</p></div></div></topiccategory_help>
+  <tempextent_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">The temporal extent of the resource (optional)</p></div></div></tempextent_help>
+  <distributionformat_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">The format in which the resource is distributed. Choose from the dropdown list and choose "unknown" for the version if it is not known or not needed (Mandatory)</p></div></div></distributionformat_help>
+  <onlineresource_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">A online link to the resource or to a page describing it. Use the resource wizard to add this (mandatory)</p></div></div></onlineresource_help>
+  <lineage_help><div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+      <p class="help-block">The process used to create the resource (mandatory)</p></div></div></lineage_help>
 </strings>
