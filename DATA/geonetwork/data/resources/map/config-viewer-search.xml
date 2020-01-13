@@ -1,0 +1,25 @@
+<ows-context:OWSContext xmlns:ows-context="http://www.opengis.net/ows-context" version="0.3.1" id="ows-context-ex-1-v3">
+  <ows-context:General>
+    <ows:BoundingBox xmlns:ows="http://www.opengis.net/ows" crs="EPSG:27700">
+<ows:LowerCorner>-682855 466783</ows:LowerCorner>
+      <ows:UpperCorner>1222145 1275783</ows:UpperCorner>
+<!--
+      <ows:LowerCorner>-3276800 3276800</ows:LowerCorner>
+      <ows:UpperCorner>3276800 3276800</ows:UpperCorner> -->
+    </ows:BoundingBox>
+  </ows-context:General>
+ <ows-context:ResourceList>
+     <ows-context:Layer name="ospremium" hidden="false" group="Background layers" opacity="1">
+      <ows:Title xmlns:ows="http://www.opengis.net/ows">ADS OS Premium</ows:Title>
+      <ows-context:Server service="urn:ogc:serviceType:WMS">
+        <ows-context:OnlineResource xlink:href="https://t0.ads.astuntechnology.com/spatialdata-gov-scot/ospremium/service?" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+      </ows-context:Server>
+    </ows-context:Layer>
+    <ows-context:Layer name="ospremiumbw" hidden="true" group="Background layers" opacity="1">
+      <ows:Title xmlns:ows="http://www.opengis.net/ows">ADS OS Premium GreyScale</ows:Title>
+      <ows-context:Server service="urn:ogc:serviceType:WMS">
+      <ows-context:OnlineResource xlink:href="https://t0.ads.astuntechnology.com/spatialdata-gov-scot/ospremium/service?" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+      </ows-context:Server>
+    </ows-context:Layer>
+  </ows-context:ResourceList>
+</ows-context:OWSContext>

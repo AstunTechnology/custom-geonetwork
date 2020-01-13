@@ -50,6 +50,7 @@
       </li>
       <!-- TODO: Some installation only allows status update
       based on current status. -->
+<!--
       <li data-ng-class="((allowPublishInvalidMd() === true) || 
             ((allowPublishInvalidMd() === false) &&
             (!md.hasValidation() || (md.hasValidation() && md.isValid())))) ? '' : 'disabled'">
@@ -67,6 +68,7 @@
         <i class="fa fa-bell"></i>&nbsp;
         <span data-translate="">enableWorkflow</span>
       </a></li>
+-->
       <li class="divider" data-ng-if="user.isConnected()"></li>
       <li><a data-ng-href=""
              data-ng-if="user.isEditorOrMore()"

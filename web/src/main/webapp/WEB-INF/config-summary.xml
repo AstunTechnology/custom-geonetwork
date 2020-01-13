@@ -132,7 +132,8 @@
   <summaryTypes>
     <summaryType name="details" format="DIMENSION">
       <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
-      <item facet="mdActions"/>
+      <item facet="category" max="99" sortBy="value"
+              translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>
       <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
       <item facet="inspireThemeURI" sortBy="value" sortOrder="asc" max="35"
             translator="term:http://inspire.ec.europa.eu/theme"/>
@@ -140,17 +141,18 @@
       <!--<item facet="inspireThemeWithAc" sortBy="value" sortOrder="asc" max="35"/>-->
       <item facet="keyword" max="15"/>
       <item facet="orgName" max="25"/>
-      <item facet="sourceCatalog"
-            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/>
+      <!-- <item facet="sourceCatalog"
+            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/> -->
       <item facet="createDateYear" sortBy="value" sortOrder="desc" max="40"/>
       <item facet="format" max="15" sortBy="value" sortOrder="asc"/>
+      <item facet="mdActions"/>
       <item facet="spatialRepresentationType"
             translator="codelist:gmd:MD_SpatialRepresentationTypeCode"/>
       <item facet="maintenanceAndUpdateFrequency"
             translator="codelist:gmd:MD_MaintenanceFrequencyCode"/>
-      <item facet="status" translator="codelist:gmd:MD_ProgressCode"/>
+      <!-- <item facet="status" translator="codelist:gmd:MD_ProgressCode"/> -->
       <item facet="serviceType"/>
-      <item facet="denominator" sortBy="numValue" sortOrder="desc"/>
+      <item facet="denominator" sortBy="value" sortOrder="desc"/>
       <item facet="resolution" sortBy="value" sortOrder="desc"/>
       <!--
       <item facet="region"
@@ -164,10 +166,10 @@
       <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
       <item facet="category" max="99" sortBy="value"
             translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>
-      <item facet="mdStatus" max="10" sortBy="value"
-            translator="db:org.fao.geonet.repository.StatusValueRepository:findOne:int"/>
-      <item facet="sourceCatalog"
-            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/>
+      <!-- <item facet="mdStatus" max="10" sortBy="value"
+            translator="db:org.fao.geonet.repository.StatusValueRepository:findOne:int"/> -->
+      <!-- <item facet="sourceCatalog"
+            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/> -->
       <item facet="isValid" max="3" sortBy="value" translator="apploc:validStatus-"/>
       <item facet="groupOwner" max="199" sortBy="value"
             translator="db:org.fao.geonet.repository.GroupRepository:findOne:int"/>
@@ -199,8 +201,8 @@
             translator="codelist:gmd:MD_MaintenanceFrequencyCode"/>
       <item facet="status" translator="codelist:gmd:MD_ProgressCode"/>
       <item facet="serviceType"/>
-      <item facet="denominator" sortBy="numValue" sortOrder="desc"/>
-      <item facet="resolution" sortBy="numValue" sortOrder="desc"/>
+      <item facet="denominator" sortBy="value" sortOrder="desc"/>
+      <item facet="resolution" sortBy="value" sortOrder="desc"/>
       <!--<item facet="metadataPOC" max="15"/>-->
     </summaryType>
     <summaryType name="subtemplates">

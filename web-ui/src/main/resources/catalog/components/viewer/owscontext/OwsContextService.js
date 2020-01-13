@@ -90,6 +90,8 @@
        * @ngdoc method
        * @name gnOwsContextService#loadContext
        * @methodOf gn_viewer.service:gnOwsContextService
+       * 
+       * Return a promise to be able to bind as if it was a loadContextByURL
        *
        * @description
        * Loads a context, ie. creates layers and centers the map
@@ -100,8 +102,8 @@
        *  after the context layers (used to add layers from the map settings)
        */
       this.loadContext = function(text, map, additionalLayers) {
-        // broadcast context load
-        $rootScope.$broadcast('owsContextLoaded');
+        
+        var deferred = $q.defer();
 
         var context = unmarshaller.unmarshalString(text).value;
         // first remove any existing layer
@@ -162,7 +164,11 @@
         }
 
         // load the resources & add additional layers if available
-        var layers = context.resourceList.layer;
+        var layers = [];
+        
+        if(context.resourceList && context.resourceList.layer) {
+          layers = context.resourceList.layer;
+        }
         if (additionalLayers) {
           layers = layers.concat(additionalLayers);
         }
@@ -171,12 +177,13 @@
         var self = this;
         var promises = [];
         var overlays = [];
-        if (angular.isArray(layers)) {
 
-          // ----  Clean bg layers
-          if (map.getLayers().getLength() > 0) {
-            map.getLayers().removeAt(0);
-          }
+        // ----  Clean bg layers
+        if (map.getLayers().getLength() > 0) {
+          map.getLayers().removeAt(0);
+        }
+        
+        if (angular.isArray(layers)) {
           var bgLoadingLayer = new ol.layer.Image({
             loading: true,
             label: 'loading',
@@ -324,6 +331,13 @@
             firstLoad = false;
           }
         }
+        
+        // broadcast context load
+        $rootScope.$broadcast('owsContextLoaded');
+       
+        deferred.resolve();
+        
+        return deferred.promise;
       };
 
       /**

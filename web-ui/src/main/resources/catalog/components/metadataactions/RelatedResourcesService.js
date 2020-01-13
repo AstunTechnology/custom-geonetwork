@@ -91,30 +91,23 @@
             var isGetFeatureLink =
                (url.toLowerCase().indexOf('request=getfeature') > -1);
 
-            if (isServiceLink && !isGetFeatureLink) {
-              gnMap.addOwsServiceToMap(url, 'WFS');
+            var featureName;
+            if (isGetFeatureLink) {
+              var name = 'typename';
+              var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+              var results = regex.exec(url);
+
+              if (results) {
+                featureName = decodeURIComponent(results[1].replace(/\+/g, ' '));
+              }
             } else {
-              var ftName = '';
-
-              if (isGetFeatureLink) {
-                var name = 'typename';
-                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-                var results = regex.exec(url);
-
-                if (results) {
-                  ftName = decodeURIComponent(results[1].replace(/\+/g, ' '));
-                }
-              } else {
-                ftName = $filter('gnLocalized')(link.title);
-              }
-
-              if (ftName) {
-                gnMap.addWfsFromScratch(gnSearchSettings.viewerMap,
-                   url, ftName, false, md);
-              } else {
-                gnMap.addOwsServiceToMap(url, 'WFS');
-              }
+              featureName = $filter('gnLocalized')(link.title);
             }
+
+            gnMap.addWfsFromScratch(gnSearchSettings.viewerMap,
+                url, featureName, false, md);
+            
+            
             gnSearchLocation.setMap();
           };
 

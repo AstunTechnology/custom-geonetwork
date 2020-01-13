@@ -162,21 +162,56 @@
               defer.reject();
               return $q.defer().promise;
             }
+            
+            //Check if the layer has some projection restriction
+            //If no restriction, just (try to) add it
+            if(layerInfo.projectionList && layerInfo.projectionList.length 
+                && layerInfo.projectionList.length > 0) {
+              var addIt = false;
+              
+              $.each(layerInfo.projectionList, function(i, p){
+                if(map.getView().getProjection().getCode() == p) {
+                  addIt = true;
+                }
+              });
+              
+              if(!addIt) {
+                defer.reject();
+                return $q.defer().promise;
+              }
+            }
 
             switch (layerInfo.type) {
               case 'osm':
                 defer.resolve(new ol.layer.Tile({
                   source: new ol.source.OSM(),
-                  title: layerInfo.title || 'OpenStreetMap'
+                  title: layerInfo.title || 'OpenStreetMap',
+                  label: layerInfo.title || 'OpenStreetMap',
+                  group: layerInfo.group
                 }));
                 break;
 
-              case 'tms':
+              case 'tms':            
+                var prop = { 
+                  // Settings are usually encoded
+                    url: decodeURI(layerInfo.url)
+                };
+                
+                if(layerInfo.projection) {
+                  prop.projection = layerInfo.projection;
+                }
+                
+                if(layerInfo.attribution) {
+                  prop.attributions = [
+                    new ol.Attribution({"html": layerInfo.attribution})
+                  ]
+                }
+                
                 defer.resolve(new ol.layer.Tile({
-                  source: new ol.source.XYZ({
-                        url: layerInfo.url
-                  }),
-                  title: layerInfo.title || 'TMS Layer'
+                  source: new ol.source.XYZ(prop),
+                  title: layerInfo.title || 'TMS Layer',
+                  label: layerInfo.title || 'TMS Layer',
+                  group: layerInfo.group
                 }));
                 break;
 
@@ -187,7 +222,9 @@
                     key: layerInfo.key,
                     imagerySet: 'Aerial'
                   }),
-                  title: layerInfo.title || 'Bing Aerial'
+                  title: layerInfo.title || 'Bing Aerial',
+                  label: layerInfo.title || 'Bing Aerial',
+                  group: layerInfo.group
                 }));
                 break;
 
@@ -200,7 +237,9 @@
                 source.set('type', type);
                 defer.resolve(new ol.layer.Tile({
                   source: source,
-                  title: layerInfo.title || 'Stamen'
+                  title: layerInfo.title || 'Stamen',
+                  label: layerInfo.title || 'Stamen',
+                  group: layerInfo.group
                 }));
                 break;
 
@@ -218,7 +257,13 @@
                       if (layerInfo.title) {
                         layer.set('title', layerInfo.title);
                         layer.set('label', layerInfo.title);
+                        layer.set('group', layerInfo.group);
                       }
+                      
+                      if(layerInfo.attribution) {
+                        layer.getSource().setAttributions(layerInfo.attribution);
+                      }
+
                       defer.resolve(layer);
                     });
                 break;
@@ -236,7 +281,13 @@
                       if (layerInfo.title) {
                         layer.set('title', layerInfo.title);
                         layer.set('label', layerInfo.title);
+                        layer.set('group', layerInfo.group);
                       }
+                      
+                      if(layerInfo.attribution) {
+                        layer.getSource().setAttributions(layerInfo.attribution);
+                      }
+
                       defer.resolve(layer);
                     });
                 break;
@@ -1078,24 +1129,30 @@
                   var vectorFormat = new ol.format.WFS();
               }
 
+              var urlService = url;
+              
+
+              //check if proxy is needed
+              var _url = url.split('/');
+              _url = _url[0] + '/' + _url[1] + '/' + _url[2] + '/';
+              if ($.inArray(_url, gnGlobalSettings.requireProxy) >= 0
+                && url.indexOf(gnGlobalSettings.proxyUrl) != 0) {
+                getCapLayer.useProxy = true;
+              }
+              
               var vectorSource = new ol.source.Vector({
                 format: vectorFormat,
-                loader: function(extent, resolution, projection) {
-                  if (this.loadingLayer) {
-                    return;
-                  }
-
-                  this.loadingLayer = true;
-
-                  var parts = url.split('?');
-
+                url: function(extent) {
+                  var parts = urlService.split('?');
+                  
                   var urlGetFeature = gnUrlUtils.append(parts[0],
                       gnUrlUtils.toKeyValue({
                         service: 'WFS',
                         request: 'GetFeature',
                         version: getCapLayer.version,
                         srsName: map.getView().getProjection().getCode(),
-                        bbox: extent.join(','),
+                        bbox: extent.join(',') + "," + 
+                          map.getView().getProjection().getCode(),
                         typename: getCapLayer.name.prefix + ':' +
                                    getCapLayer.name.localPart}));
 
@@ -1119,22 +1176,10 @@
                     urlGetFeature = gnGlobalSettings.proxyUrl
                                         + encodeURIComponent(urlGetFeature);
                   }
-
-                  $.ajax({
-                    url: urlGetFeature
-                  })
-                      .done(function(response) {
-                        // TODO: Check WFS exception
-                        vectorSource.addFeatures(vectorFormat.
-                            readFeatures(response));
-                      })
-                      .then(function() {
-                        this.loadingLayer = false;
-                      });
+                  
+                  return urlGetFeature;
                 },
-                strategy: ol.loadingstrategy.bbox,
-                projection: map.getView().getProjection().getCode(),
-                url: url
+                strategy: ol.loadingstrategy.bbox
               });
 
               var extent = null;
@@ -1742,7 +1787,8 @@
               case 'osm':
                 return new ol.layer.Tile({
                   source: new ol.source.OSM(),
-                  title: title ||  'OpenStreetMap'
+                  title: title ||  'OpenStreetMap',
+                  label: title ||  'OpenStreetMap'
                 });
               //ALEJO: tms support
               case 'tms':
@@ -1750,7 +1796,8 @@
                   source: new ol.source.XYZ({
                         url: opt.url
                   }),
-                  title: title ||  'TMS Layer'
+                  title: title ||  'TMS Layer',
+                  label: title ||  'TMS Layer'
                 });
               case 'bing_aerial':
                 return new ol.layer.Tile({
@@ -1759,7 +1806,8 @@
                     key: gnViewerSettings.bingKey,
                     imagerySet: 'Aerial'
                   }),
-                  title: title ||  'Bing Aerial'
+                  title: title ||  'Bing Aerial',
+                  label: title ||  'Bing Aerial'
                 });
               case 'stamen':
                 //We make watercolor the default layer
@@ -1770,7 +1818,8 @@
                 source.set('type', type);
                 return new ol.layer.Tile({
                   source: source,
-                  title: title ||  'Stamen'
+                  title: title ||  'Stamen',
+                  label: title ||  'Stamen'
                 });
 
               case 'wmts':
@@ -1940,8 +1989,7 @@
          * appear in the layer manager
          */
         selected: function(layer) {
-          return layer.displayInLayerManager && !layer.get('fromWps') &&
-              (!layer.get('errors') || !layer.get('errors').length);
+          return layer.displayInLayerManager && !layer.get('fromWps');
         },
         visible: function(layer) {
           return layer.displayInLayerManager && layer.visible;

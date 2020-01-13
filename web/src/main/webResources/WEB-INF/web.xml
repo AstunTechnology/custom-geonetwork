@@ -157,10 +157,10 @@
       <param-value>http://localhost:8888/</param-value>
     </init-param>-->
   </filter>
-  <filter-mapping>
+<!--   <filter-mapping>
     <filter-name>XFrameOptionsFilter</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping> -->
 
 
   <!-- Resources servlet -->
@@ -370,7 +370,7 @@
   </servlet-mapping>
    -->
 
-  <servlet>
+<servlet>
     <servlet-name>HttpProxy</servlet-name>
     <servlet-class>org.fao.geonet.proxy.URITemplateProxyServlet</servlet-class>
     <init-param>
@@ -379,6 +379,10 @@
     </init-param>
     <init-param>
       <param-name>log</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>http.protocol.handle-redirects</param-name>
       <param-value>true</param-value>
     </init-param>
   </servlet>
