@@ -51,6 +51,8 @@
     <module>dublin-core</module>
     <module>iso19110</module>
     <module>iso19139</module>
+    <module>iso19139.gemini22</module>
+    <module>iso19139.gemini23</module>
   </modules>
   <properties>
     <rootProjectDir>../..</rootProjectDir>
