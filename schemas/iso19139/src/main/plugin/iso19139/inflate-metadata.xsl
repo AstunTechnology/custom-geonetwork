@@ -20,6 +20,44 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="gmd:MD_Distribution">
+    <xsl:copy>
+      <xsl:copy-of select="@*" />
+
+      <xsl:copy-of select="gmd:distributionFormat" />
+      <xsl:if test="not(gmd:distributionFormat)" >
+        <xsl:message>=== adding a distribution format element===</xsl:message>
+        <gmd:distributionFormat>
+            <gmd:MD_Format>
+               <gmd:name>
+                  <gco:CharacterString xmlns:gco="http://www.isotc211.org/2005/gco"></gco:CharacterString>
+               </gmd:name>
+               <gmd:version>
+                  <gco:CharacterString xmlns:gco="http://www.isotc211.org/2005/gco">unknown</gco:CharacterString>
+               </gmd:version>
+            </gmd:MD_Format>
+         </gmd:distributionFormat>
+      </xsl:if>
+
+      <xsl:copy-of select="gmd:transferOptions" />
+
+    </xsl:copy>
+
+  </xsl:template>
+
+  <xsl:template match="gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format">
+    <xsl:copy>
+      <xsl:copy-of select="@*" />
+      <xsl:copy-of select="gmd:name" />
+      <xsl:copy-of select="gmd:version" />
+    <xsl:if test="not(gmd:version/gco:CharacterString/text())" >
+        <gmd:version>
+            <gco:CharacterString xmlns:gco="http://www.isotc211.org/2005/gco">unknown</gco:CharacterString>
+        </gmd:version>
+      </xsl:if>
+    </xsl:copy>
+  </xsl:template>
+
 
   <!-- Do a copy of every nodes and attributes -->
   <xsl:template match="@*|node()">

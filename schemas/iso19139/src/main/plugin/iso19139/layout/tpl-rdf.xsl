@@ -34,7 +34,8 @@
                 xmlns:gco="http://www.isotc211.org/2005/gco"
                 xmlns:gmd="http://www.isotc211.org/2005/gmd"
                 xmlns:srv="http://www.isotc211.org/2005/srv"
-                xmlns:gml="http://www.opengis.net/gml"
+                xmlns:gml="http://www.opengis.net/gml/3.2"
+                xmlns:gml320="http://www.opengis.net/gml"
                 xmlns:ogc="http://www.opengis.net/rdf#"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:iso19139="http://geonetwork-opensource.org/schemas/iso19139"
@@ -200,6 +201,30 @@
           </dct:format>
         </xsl:if>
         <!-- xpath: gmd:protocol/gco:CharacterString -->
+
+        <!-- "The license under which the dataset is published and can be reused." -->
+        <!-- Copied from dcat:dataset section for DGU -->
+
+
+        <xsl:for-each select="//gmd:identificationInfo/*/gmd:resourceConstraints/gmd:MD_LegalConstraints/*/gmd:MD_RestrictionCode">
+          <!-- <dct:license>
+            <xsl:value-of select="@codeListValue"/>
+          </dct:license> -->
+        </xsl:for-each>
+        <xsl:for-each
+        select="//gmd:identificationInfo/*/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString">
+          <dct:license>
+            <xsl:value-of select="."/>
+          </dct:license>
+        </xsl:for-each>
+
+      <xsl:variable name="date" select="substring-before(gmd:dateStamp/gco:DateTime, 'T')"/>
+      <dct:issued>
+        <xsl:value-of select="$date"/>
+      </dct:issued>
+      <dct:modified>
+        <xsl:value-of select="$date"/>
+      </dct:modified>
 
       </dcat:Distribution>
     </xsl:for-each-group>
@@ -371,12 +396,12 @@
     <!-- "The temporal period that the dataset covers." -->
     <!-- TODO could be improved-->
     <xsl:for-each
-      select="gmd:extent/*/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod">
+      select="gmd:extent/*/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/(gml:TimePeriod|gml320:TimePeriod)">
       <dct:temporal>
-        <xsl:value-of select="gml:beginPosition"/>
-        <xsl:if test="gml:endPosition">
+        <xsl:value-of select="gml:beginPosition|gml320:beginPosition"/>
+        <xsl:if test="gml:endPosition|gml320:endPosition">
           /
-          <xsl:value-of select="gml:endPosition"/>
+          <xsl:value-of select="gml:endPosition|gml320:endPosition"/>
         </xsl:if>
       </dct:temporal>
     </xsl:for-each>
@@ -390,9 +415,9 @@
     </xsl:for-each>
     <xsl:for-each
       select="gmd:citation/*/gmd:date/gmd:CI_Date[gmd:dateType/gmd:CI_DateTypeCode/@codeListValue='revision']">
-      <dct:updated>
+      <dct:modified>
         <xsl:value-of select="gmd:date/gco:Date|gmd:date/gco:DateTime"/>
-      </dct:updated>
+      </dct:modified>
     </xsl:for-each>
 
     <!-- "An entity responsible for making the dataset available" -->
@@ -405,9 +430,23 @@
     <!-- "The frequency with which dataset is published." See placetime.com intervals. -->
     <xsl:for-each
       select="gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode">
-      <dct:accrualPeriodicity>
-        <xsl:value-of select="@codeListValue"/>
+      <xsl:variable name="updatefreq" select="@codeListValue"/>
+      <xsl:message>=== updatefrequency=<xsl:value-of select="$updatefreq"/></xsl:message>
+      <xsl:choose>
+      <xsl:when test="$updatefreq='notPlanned'">
+        <xsl:variable name="accrual" select="'irregular'"/>
+              <xsl:message>=== accrual=<xsl:value-of select="$accrual"/></xsl:message>
+
+        <dct:accrualPeriodicity>
+        <xsl:value-of select="$accrual"/>
       </dct:accrualPeriodicity>
+      </xsl:when>
+      <xsl:otherwise>
+      <dct:accrualPeriodicity>
+        <xsl:value-of select="$updatefreq"/>
+      </dct:accrualPeriodicity>
+    </xsl:otherwise>
+    </xsl:choose>
     </xsl:for-each>
     <!-- xpath: gmd:identificationInfo/*/gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode/@codeListValue -->
 
@@ -434,7 +473,8 @@
 
 
     <!-- "The license under which the dataset is published and can be reused." -->
-    <xsl:for-each select="gmd:resourceConstraints/gmd:MD_LegalConstraints/*/gmd:MD_RestrictionCode">
+    <!-- "DGU uses the license in the distribution section." -->
+    <!-- <xsl:for-each select="gmd:resourceConstraints/gmd:MD_LegalConstraints/*/gmd:MD_RestrictionCode">
       <dct:license>
         <xsl:value-of select="@codeListValue"/>
       </dct:license>
@@ -444,7 +484,7 @@
       <dct:license>
         <xsl:value-of select="."/>
       </dct:license>
-    </xsl:for-each>
+    </xsl:for-each> -->
     <!-- xpath: gmd:identificationInfo/*/gmd:resourceConstraints/??? -->
 
 

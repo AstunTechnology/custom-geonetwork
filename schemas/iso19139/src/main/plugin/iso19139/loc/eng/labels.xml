@@ -27,7 +27,7 @@
         xmlns:gmd="http://www.isotc211.org/2005/gmd"
         xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gml="http://www.opengis.net/gml"
         xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:gmx="http://www.isotc211.org/2005/gmx"
-        xsi:noNamespaceSchemaLocation="../../../../../../../schema-labels.xsd">
+        xsi:noNamespaceSchemaLocation="../../../labels.xsd">
 
   <element name="gmd:MD_ScopeCode">
     <label>Scope code</label>
@@ -320,7 +320,7 @@
     <label>Browse Graphic</label>
   </element>
   <element name="gmd:MD_Constraints" id="67.0">
-    <label>Constraints</label>
+    <label>Conditions applying to access and use</label>
     <description>Restrictions on the access and use of a resource or metadata</description>
   </element>
   <element name="gmd:MD_CoverageDescription" id="239.0">
@@ -409,10 +409,11 @@
     <description>Keywords, their type and reference source</description>
   </element>
   <element name="gmd:MD_LegalConstraints" id="69.0">
-    <label>Legal constraints</label>
+    <label>Limitations on public access</label>
     <description>Restrictions and legal prerequisites for accessing and using the resource or
       metadata
     </description>
+    <condition>mandatory</condition>
   </element>
   <element name="gmd:MD_MaintenanceInformation" id="142.0">
     <label>Maintenance information</label>
@@ -674,8 +675,6 @@
   </element>
   <element name="gmd:citedResponsibleParty" id="367.0">
     <label>Cited responsible party</label>
-    <btnLabel>Add responsible party</btnLabel>
-    <btnClass>fa fa-user-plus</btnClass>
     <description>Name and position information for an individual or organization that is
       responsible for the resource
     </description>
@@ -699,15 +698,247 @@
       spatial extent
     </description>
   </element>
-  <element name="gmd:code" id="207.0" context="gmd:RS_Identifier">
-    <label>Unique resource identifier</label>
+  <element context="/gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:code" name="gmd:code">
+    <label>Spatial Reference System</label>
+    <description>URI for the EPSG Code representing the Spatial Reference System</description>
+    <condition>mandatory</condition>
+  </element>
+    <element name="gmd:code" id="207.0" context="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code">
+    <label>Citation Identifier</label>
     <description>Alphanumeric value identifying an instance in the namespace</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:code" id="207.0" context="gmd:MD_Identifier">
+  <element name="gmd:code" id="207.0" context="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:MD_Identifier/gmd:code">
     <label>Code</label>
     <description>Alphanumeric value identifying an instance in the namespace</description>
-    <condition>mandatory</condition>
+    <condition>conditional</condition>
+    <helper>
+      <!-- Regions from ISO3166-2 https://www.iso.org/obp/ui/#iso:code:3166:GB -->
+      <option value="GB-EAW">England and Wales</option>
+      <option value="GB-ENG">England</option>
+      <option value="GB-GBN">Great Britain</option>
+      <option value="GB-NIR">Northern Ireland</option>
+      <option value="GB-SCT">Scotland</option>
+      <option value="GB-UKM">United Kingdom</option>
+      <option value="GB-WLS">Wales [Cymru GB-CYM]</option>
+      <option value="GB-ABE">Aberdeen City</option>
+      <option value="GB-ABD">Aberdeenshire</option>
+      <option value="GB-ANS">Angus</option>
+      <option value="GB-ANN">Antrim and Newtownabbey</option>
+      <option value="GB-AND">Ards and North Down</option>
+      <option value="GB-AGB">Argyll and Bute</option>
+      <option value="GB-ABC">Armagh, Banbridge and Craigavon</option>
+      <option value="GB-BDG">Barking and Dagenham</option>
+      <option value="GB-BNE">Barnet</option>
+      <option value="GB-BNS">Barnsley</option>
+      <option value="GB-BAS">Bath and North East Somerset</option>
+      <option value="GB-BDF">Bedford</option>
+      <option value="GB-BFS">Belfast</option>
+      <option value="GB-BEX">Bexley</option>
+      <option value="GB-BIR">Birmingham</option>
+      <option value="GB-BBD">Blackburn with Darwen</option>
+      <option value="GB-BPL">Blackpool</option>
+      <option value="GB-BGW">Blaenau Gwent</option>
+      <option value="GB-BOL">Bolton</option>
+      <option value="GB-BMH">Bournemouth</option>
+      <option value="GB-BRC">Bracknell Forest</option>
+      <option value="GB-BRD">Bradford</option>
+      <option value="GB-BEN">Brent</option>
+      <option value="GB-BGE">Bridgend [Pen-y-bont ar Ogwr GB-POG]</option>
+      <option value="GB-BNH">Brighton and Hove</option>
+      <option value="GB-BST">Bristol, City of</option>
+      <option value="GB-BRY">Bromley</option>
+      <option value="GB-BKM">Buckinghamshire</option>
+      <option value="GB-BUR">Bury</option>
+      <option value="GB-CAY">Caerphilly [Caerffili GB-CAF]</option>
+      <option value="GB-CLD">Calderdale</option>
+      <option value="GB-CAM">Cambridgeshire</option>
+      <option value="GB-CMD">Camden</option>
+      <option value="GB-CRF">Cardiff [Caerdydd GB-CRD]</option>
+      <option value="GB-CMN">Carmarthenshire [Sir Gaerfyrddin GB-GFY]</option>
+      <option value="GB-CCG">Causeway Coast and Glens</option>
+      <option value="GB-CBF"> Central Bedfordshire</option>
+      <option value="GB-CGN">Ceredigion [Sir Ceredigion]</option>
+      <option value="GB-CHE"> Cheshire East</option>
+      <option value="GB-CHW"> Cheshire West and Chester</option>
+      <option value="GB-CLK">Clackmannanshire</option>
+      <option value="GB-CWY">Conwy</option>
+      <option value="GB-CON">Cornwall</option>
+      <option value="GB-COV">Coventry</option>
+      <option value="GB-CRY">Croydon</option>
+      <option value="GB-CMA">Cumbria</option>
+      <option value="GB-DAL">Darlington</option>
+      <option value="GB-DEN">Denbighshire [Sir Ddinbych GB-DDB]</option>
+      <option value="GB-DER">Derby</option>
+      <option value="GB-DBY">Derbyshire</option>
+      <option value="GB-DRS">Derry and Strabane</option>
+      <option value="GB-DEV">Devon</option>
+      <option value="GB-DNC">Doncaster</option>
+      <option value="GB-DOR">Dorset</option>
+      <option value="GB-DUD">Dudley</option>
+      <option value="GB-DGY">Dumfries and Galloway</option>
+      <option value="GB-DND">Dundee City</option>
+      <option value="GB-DUR">Durham County</option>
+      <option value="GB-EAL">Ealing</option>
+      <option value="GB-EAY">East Ayrshire</option>
+      <option value="GB-EDU">East Dunbartonshire</option>
+      <option value="GB-ELN">East Lothian</option>
+      <option value="GB-ERW">East Renfrewshire</option>
+      <option value="GB-ERY">East Riding of Yorkshire</option>
+      <option value="GB-ESX">East Sussex</option>
+      <option value="GB-EDH">Edinburgh, City of</option>
+      <option value="GB-ELS">Eilean Siar</option>
+      <option value="GB-ENF">Enfield</option>
+      <option value="GB-ESS">Essex</option>
+      <option value="GB-FAL">Falkirk</option>
+      <option value="GB-FMO">Fermanagh and Omagh</option>
+      <option value="GB-FIF">Fife</option>
+      <option value="GB-FLN">Flintshire [Sir y Fflint GB-FFL]</option>
+      <option value="GB-GAT">Gateshead</option>
+      <option value="GB-GLG">Glasgow City</option>
+      <option value="GB-GLS">Gloucestershire</option>
+      <option value="GB-GRE">Greenwich</option>
+      <option value="GB-GWN">Gwynedd</option>
+      <option value="GB-HCK">Hackney</option>
+      <option value="GB-HAL">Halton</option>
+      <option value="GB-HMF">Hammersmith and Fulham</option>
+      <option value="GB-HAM">Hampshire</option>
+      <option value="GB-HRY">Haringey</option>
+      <option value="GB-HRW">Harrow</option>
+      <option value="GB-HPL">Hartlepool</option>
+      <option value="GB-HAV">Havering</option>
+      <option value="GB-HEF">Herefordshire</option>
+      <option value="GB-HRT">Hertfordshire</option>
+      <option value="GB-HLD">Highland</option>
+      <option value="GB-HIL">Hillingdon</option>
+      <option value="GB-HNS">Hounslow</option>
+      <option value="GB-IVC">Inverclyde</option>
+      <option value="GB-AGY">Isle of Anglesey [Sir Ynys Môn GB-YNM]</option>
+      <option value="GB-IOW">Isle of Wight</option>
+      <option value="GB-IOS">Isles of Scilly</option>
+      <option value="GB-ISL">Islington</option>
+      <option value="GB-KEC">Kensington and Chelsea</option>
+      <option value="GB-KEN">Kent</option>
+      <option value="GB-KHL">Kingston upon Hull</option>
+      <option value="GB-KTT">Kingston upon Thames</option>
+      <option value="GB-KIR">Kirklees</option>
+      <option value="GB-KWL">Knowsley</option>
+      <option value="GB-LBH">Lambeth</option>
+      <option value="GB-LAN">Lancashire</option>
+      <option value="GB-LDS">Leeds</option>
+      <option value="GB-LCE">Leicester</option>
+      <option value="GB-LEC">Leicestershire</option>
+      <option value="GB-LEW">Lewisham</option>
+      <option value="GB-LIN">Lincolnshire</option>
+      <option value="GB-LBC">Lisburn and Castlereagh</option>
+      <option value="GB-LIV">Liverpool</option>
+      <option value="GB-LND">London, City of</option>
+      <option value="GB-LUT">Luton</option>
+      <option value="GB-MAN">Manchester</option>
+      <option value="GB-MDW">Medway</option>
+      <option value="GB-MTY">Merthyr Tydfil [Merthyr Tudful GB-MTU]</option>
+      <option value="GB-MRT">Merton</option>
+      <option value="GB-MUL">Mid Ulster</option>
+      <option value="GB-MEA">Mid and East Antrim</option>
+      <option value="GB-MDB">Middlesbrough</option>
+      <option value="GB-MLN">Midlothian</option>
+      <option value="GB-MIK">Milton Keynes</option>
+      <option value="GB-MON">Monmouthshire [Sir Fynwy GB-FYN]</option>
+      <option value="GB-MRY">Moray</option>
+      <option value="GB-NTL">Neath Port Talbot [Castell-nedd Port Talbot GB-CTL]</option>
+      <option value="GB-NET">Newcastle upon Tyne</option>
+      <option value="GB-NWM">Newham</option>
+      <option value="GB-NWP">Newport [Casnewydd GB-CNW]</option>
+      <option value="GB-NMD">Newry, Mourne and Down</option>
+      <option value="GB-NFK">Norfolk</option>
+      <option value="GB-NAY">North Ayrshire</option>
+      <option value="GB-NEL">North East Lincolnshire</option>
+      <option value="GB-NLK">North Lanarkshire</option>
+      <option value="GB-NLN">North Lincolnshire</option>
+      <option value="GB-NSM">North Somerset</option>
+      <option value="GB-NTY">North Tyneside</option>
+      <option value="GB-NYK">North Yorkshire</option>
+      <option value="GB-NTH">Northamptonshire</option>
+      <option value="GB-NBL">Northumberland</option>
+      <option value="GB-NGM">Nottingham</option>
+      <option value="GB-NTT">Nottinghamshire</option>
+      <option value="GB-OLD">Oldham</option>
+      <option value="GB-ORK">Orkney Islands</option>
+      <option value="GB-OXF">Oxfordshire</option>
+      <option value="GB-PEM">Pembrokeshire [Sir Benfro GB-BNF]</option>
+      <option value="GB-PKN">Perth and Kinross</option>
+      <option value="GB-PTE">Peterborough</option>
+      <option value="GB-PLY">Plymouth</option>
+      <option value="GB-POL">Poole</option>
+      <option value="GB-POR">Portsmouth</option>
+      <option value="GB-POW">Powys</option>
+      <option value="GB-RDG">Reading</option>
+      <option value="GB-RDB">Redbridge</option>
+      <option value="GB-RCC">Redcar and Cleveland</option>
+      <option value="GB-RFW">Renfrewshire</option>
+      <option value="GB-RCT">Rhondda, Cynon, Taff [Rhondda, Cynon,Taf]</option>
+      <option value="GB-RIC">Richmond upon Thames</option>
+      <option value="GB-RCH">Rochdale</option>
+      <option value="GB-ROT">Rotherham</option>
+      <option value="GB-RUT">Rutland</option>
+      <option value="GB-SLF">Salford</option>
+      <option value="GB-SAW">Sandwell</option>
+      <option value="GB-SCB">Scottish Borders, The</option>
+      <option value="GB-SFT">Sefton</option>
+      <option value="GB-SHF">Sheffield</option>
+      <option value="GB-ZET">Shetland Islands</option>
+      <option value="GB-SHR">Shropshire</option>
+      <option value="GB-SLG">Slough</option>
+      <option value="GB-SOL">Solihull</option>
+      <option value="GB-SOM">Somerset</option>
+      <option value="GB-SAY">South Ayrshire</option>
+      <option value="GB-SGC">South Gloucestershire</option>
+      <option value="GB-SLK">South Lanarkshire</option>
+      <option value="GB-STY">South Tyneside</option>
+      <option value="GB-STH">Southampton</option>
+      <option value="GB-SOS">Southend-on-Sea</option>
+      <option value="GB-SWK">Southwark</option>
+      <option value="GB-SHN">St. Helens</option>
+      <option value="GB-STS">Staffordshire</option>
+      <option value="GB-STG">Stirling</option>
+      <option value="GB-SKP">Stockport</option>
+      <option value="GB-STT">Stockton-on-Tees</option>
+      <option value="GB-STE">Stoke-on-Trent</option>
+      <option value="GB-SFK">Suffolk</option>
+      <option value="GB-SND">Sunderland</option>
+      <option value="GB-SRY">Surrey</option>
+      <option value="GB-STN">Sutton</option>
+      <option value="GB-SWA">Swansea [Abertawe GB-ATA]</option>
+      <option value="GB-SWD">Swindon</option>
+      <option value="GB-TAM">Tameside</option>
+      <option value="GB-TFW">Telford and Wrekin</option>
+      <option value="GB-THR">Thurrock</option>
+      <option value="GB-TOB">Torbay</option>
+      <option value="GB-TOF">Torfaen [Tor-faen]</option>
+      <option value="GB-TWH">Tower Hamlets</option>
+      <option value="GB-TRF">Trafford</option>
+      <option value="GB-VGL">Vale of Glamorgan, The [Bro Morgannwg GB-BMG]</option>
+      <option value="GB-WKF">Wakefield</option>
+      <option value="GB-WLL">Walsall</option>
+      <option value="GB-WFT">Waltham Forest</option>
+      <option value="GB-WND">Wandsworth</option>
+      <option value="GB-WRT">Warrington</option>
+      <option value="GB-WAR">Warwickshire</option>
+      <option value="GB-WBK">West Berkshire</option>
+      <option value="GB-WDU">West Dunbartonshire</option>
+      <option value="GB-WLN">West Lothian</option>
+      <option value="GB-WSX">West Sussex</option>
+      <option value="GB-WSM">Westminster</option>
+      <option value="GB-WGN">Wigan</option>
+      <option value="GB-WIL">Wiltshire</option>
+      <option value="GB-WNM">Windsor and Maidenhead</option>
+      <option value="GB-WRL">Wirral</option>
+      <option value="GB-WOK">Wokingham</option>
+      <option value="GB-WLV">Wolverhampton</option>
+      <option value="GB-WOR">Worcestershire</option>
+      <option value="GB-WRX">Wrexham [Wrecsam GB-WRC]</option>
+      <option value="GB-YOR">York</option>
+    </helper>
   </element>
   <element name="gmd:code" id="547.0" context="gmd:MD_CodeValue">
     <label>Code</label>
@@ -757,24 +988,19 @@
     <condition>mandatory</condition>
   </element>
   <element name="gmd:contact" id="8.0" context="gmd:MD_Metadata">
-    <condition>mandatory</condition>
-    <label>Contact</label>
-    <btnLabel>Add contact</btnLabel>
-    <btnClass>fa fa-user-plus</btnClass>
+        <label>Contact</label>
     <description>Party responsible for the metadata information</description>
+    <condition>mandatory</condition>
   </element>
   <element name="gmd:contact" id="148.1" context="gmd:MD_MaintenanceInformation">
     <label>Contact</label>
-    <btnLabel>Add maintainer</btnLabel>
-    <btnClass>fa fa-user-plus</btnClass>
     <description>Identification of, and means of communication with, person(s) and
       organization(s) with responsability for maintaining the metadata
     </description>
+    <condition>mandatory</condition>
   </element>
   <element name="gmd:contact" id="8.0">
     <label>Metadata author</label>
-    <btnLabel>Add author</btnLabel>
-    <btnClass>fa fa-user-plus</btnClass>
     <description>Party responsible for the metadata information</description>
     <condition>mandatory</condition>
   </element>
@@ -858,42 +1084,35 @@
   </element>
   <element name="gmd:date" id="570.0">
     <label>Date</label>
-    <btnClass>fa fa-calendar-plus-o</btnClass>
     <description>Reference date for the cited resource (YYYY-MM-DD)</description>
     <condition>mandatory</condition>
   </element>
   <element name="gmd:date" id="570.0" context="gmd:MD_Revision">
     <label>Date of last update</label>
-    <btnClass>fa fa-calendar-plus-o</btnClass>
     <description>Date of last update</description>
   </element>
   <element name="gmd:date" id="144.0" context="gmd:MD_MaintenanceInformation">
     <label>Date of next update</label>
-    <btnClass>fa fa-calendar-plus-o</btnClass>
     <description>Scheduled revision date for resource</description>
   </element>
   <element name="gmd:date" id="362.0" context="gmd:CI_Citation">
     <condition>mandatory</condition>
     <label>Date</label>
-    <btnClass>fa fa-calendar-plus-o</btnClass>
     <description>Reference date for the cited resource</description>
     <_condition>M</_condition>
   </element>
   <element name="gmd:date" id="394.0" context="gmd:CI_Date">
     <condition>mandatory</condition>
     <label>Date</label>
-    <btnClass>fa fa-calendar-plus-o</btnClass>
     <description>Reference date for the cited resource</description>
     <_condition>M</_condition>
   </element>
   <element name="gmd:dateOfNextUpdate" id="144.0">
     <label>Date of next update</label>
-    <btnClass>fa fa-calendar-plus-o</btnClass>
     <description>Scheduled revision date for resource (YYYY-MM-DD)</description>
   </element>
   <element name="gmd:dateStamp" id="9.0">
     <label>Date stamp</label>
-    <btnClass>fa fa-calendar-plus-o</btnClass>
     <description>Date that the metadata was created (YYYY-MM-DDThh:mm:ss)</description>
     <condition>mandatory</condition>
   </element>
@@ -936,15 +1155,15 @@
     <description>The number below the line in a vulgar fraction</description>
     <condition>add either a denominator or a distance</condition>
     <helper>
-      <option value="5000">1:5´000</option>
-      <option value="10000">1:10´000</option>
-      <option value="25000">1:25´000</option>
-      <option value="50000">1:50´000</option>
-      <option value="100000">1:100´000</option>
-      <option value="200000">1:200´000</option>
-      <option value="300000">1:300´000</option>
-      <option value="500000">1:500´000</option>
-      <option value="1000000">1:1´000´000</option>
+      <option value="5000">1:5,000</option>
+      <option value="10000">1:10,000</option>
+      <option value="25000">1:25,000</option>
+      <option value="50000">1:50,000</option>
+      <option value="100000">1:100,000</option>
+      <option value="200000">1:200,000</option>
+      <option value="300000">1:300,000</option>
+      <option value="500000">1:500,000</option>
+      <option value="1000000">1:1,000,000</option>
     </helper>
 
   </element>
@@ -1038,8 +1257,8 @@
       <option value="0.50" title="m">50 cm</option>
       <option value="1" title="m">1 m</option>
       <!-- To only set unit without changing the value
-			<option title="m">m</option>
-			-->
+      <option title="m">m</option>
+      -->
       <option value="30" title="m">30 m</option>
       <option value="100" title="m">100 m</option>
     </helper>
@@ -1070,8 +1289,6 @@
   </element>
   <element name="gmd:distributorContact" id="280.0">
     <label>Distributor contact</label>
-    <btnLabel>Add distributor</btnLabel>
-    <btnClass>fa fa-user-plus</btnClass>
     <description>Party from whom the resource may be obtained. This list need not be
       exhaustive
     </description>
@@ -1329,14 +1546,13 @@
     </description>
   </element>
   <element name="gmd:hierarchyLevel" id="6.0">
-    <label>Hierarchy level</label>
-    <description>Scope to which the metadata applies (see annex H for more information about
-      metadata hierarchy levels)
+    <label>Resource Type</label>
+    <description>Type of resource, such as dataset or series. Also known as hierarchy level
     </description>
   </element>
   <element name="gmd:hierarchyLevelName" id="7.0">
     <label>Hierarchy level name</label>
-    <description>Name of the hierarchy levels for which the metadata is provided</description>
+    <description>Only applicable to series or service resource types. Name of series or service</description>
     <_condition>Conditional / hierarchyLevel is not equal to "dataset"?</_condition>
   </element>
   <element name="gmd:hoursOfService" id="391.0">
@@ -1414,7 +1630,6 @@
   </element>
   <element name="gmd:keyword" id="53.0">
     <label>Keyword</label>
-    <btnClass>fa fa-tag</btnClass>
     <description>Commonly used word(s) or formalised word(s) or phrase(s) used to describe the
       subject
     </description>
@@ -1443,7 +1658,7 @@
     </description>
   </element>
   <element name="gmd:level" id="139.0">
-    <label>Hierarchy level</label>
+    <label>Scope</label>
     <description>Hierarchical level of the data specified by the scope</description>
     <condition>mandatory</condition>
   </element>
@@ -1462,7 +1677,7 @@
     <_condition>Conditional / report not provided?</_condition>
   </element>
   <element name="gmd:linkage" id="397.0">
-    <label>Linkage</label>
+    <label>Resource Locator</label>
     <description>Location (address) for on-line access using a Uniform Resource Locator address
       or similar addressing scheme such as http://www.statkart.no/isotc211
     </description>
@@ -1564,12 +1779,14 @@
     <description>Name of reference system used</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:name" context="gmd:MD_Format" id="285.0">
+  <!-- <element name="gmd:name" context="gmd:MD_Format" id="285.0"> -->
+  <element name="gmd:name" context="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name" id="285.0" >
     <label>Name</label>
     <description>Name of the data transfer format(s)</description>
     <help>name of the data transfer format(s)</help>
     <condition>mandatory</condition>
     <helper rel="gmd:version">
+    <!-- <helper rel="gmd:version"> -->
       <option value="Text">Text</option>
       <option value="ESRI Shapefile" title="1.0">ESRI Shapefile</option>
       <option value="Mapinfo MIF/MID" title="4.5">Mapinfo MIF/MID</option>
@@ -1587,7 +1804,24 @@
       <option value="OGC:WMC">OGC:WMC</option>
       <option value="OGC:OWS-C">OGC OWS Context</option>
     </helper>
+    <helper rel="gmd:version" sort="true" displayIf="ancestor::node()[name()='gmd:MD_Metadata']/gmd:hierarchyLevelName/gco:CharacterString[contains(.,'NonGeographicDataset')]">
+    <!-- <helper rel="gmd:version"> -->
+      <option value="ACCDB">MS Access 2007 onwards database (ACCDB)</option>
+      <option value="CSV">Comma-Separated Values (CSV)</option>
+      <option value="MDB">MS Access database pre-2007 (MDB)</option>
+      <option value="XLS">MS Excel (XLS)</option>
+      <option value="XLSX">MS Excel (XLSX)</option>
+      <option value="ODT">Open Document Text (ODT)</option>
+      <option value="ODS">Open Document Spreadsheet (ODS)</option>
+      <option value="PSV">Pipe-Separated Values (PSV)</option>
+      <option value="PDF">Portable Document Format - Standardized (PDF)</option>
+      <option value="TXT">Plain Text (TXT)</option>
+      <option value="TSV">Tab-Separated Values (TSV)</option>
+      <option value="DOC">MS Word Document pre-2010 (DOC)</option>
+      <option value="DOCX">MS Word Document 2010 onwards (DOCX)</option>
+    </helper>
   </element>
+
   <element name="gmd:name" context="gmd:MD_ExtendedElementInformation"
            id="307.0">
     <label>Name</label>
@@ -1634,7 +1868,7 @@
     <label>Name of measure</label>
     <description>Name of the test applied to the data</description>
     <!-- ISO19138 Data quality basic measures Annex C - under revision ISO
-			19157 http://www.iso.org/iso/fr/catalogue_detail.htm?csnumber=32575 -->
+      19157 http://www.iso.org/iso/fr/catalogue_detail.htm?csnumber=32575 -->
     <helper rel="gmd:measureDescription">
       <option value="">-- Completeness --</option>
       <option value="Excess item"
@@ -2080,8 +2314,6 @@
   </element>
   <element name="gmd:parentIdentifier" id="5.0">
     <label>Parent identifier</label>
-    <btnLabel>Add parent record</btnLabel>
-    <btnClass>fa fa-sitemap</btnClass>
     <description>File identifier of the metadata to which this metadata is a subset
       (child)
     </description>
@@ -2114,11 +2346,10 @@
   </element>
   <element name="gmd:pointOfContact" id="29.0">
     <label>Point of contact</label>
-    <btnLabel>Add contact</btnLabel>
-    <btnClass>fa fa-user-plus</btnClass>
     <description>Identification of, and means of communication with, person(s) and
       organizations(s) associated with the resource(s)
     </description>
+    <condition>mandatory</condition>
   </element>
   <element name="gmd:polygon" id="342.0">
     <label>Polygon</label>
@@ -2173,38 +2404,57 @@
     <label>Protocol</label>
     <description>Connection protocol to be used</description>
     <helper sort="true">
-      <option value="ESRI:AIMS--http--configuration">ArcIMS Map Service Configuration File (*.AXL)</option>
-      <option value="ESRI:AIMS--http-get-feature">ArcIMS Internet Feature Map Service</option>
-      <option value="ESRI:AIMS--http-get-image">ArcIMS Internet Image Map Service</option>
-      <option value="GLG:KML-2.0-http-get-map">Google Earth KML service (ver 2.0)</option>
-      <option value="OGC:CSW">OGC-CSW Catalogue Service for the Web</option>
-      <option value="OGC:KML">OGC-KML Keyhole Markup Language</option>
-      <option value="OGC:GML">OGC-GML Geography Markup Language</option>
-      <option value="OGC:ODS">OGC-ODS OpenLS Directory Service</option>
+      <option value="ESRI:AIMS--http--configuration">ArcIMS Map Service Configuration File (*.AXL)
+      </option>
+      <option value="ESRI:AIMS--http-get-feature">ArcIMS Internet Feature Map Service
+      </option>
+      <option value="ESRI:AIMS--http-get-image">ArcIMS Internet Image Map Service
+      </option>
+      <option value="GLG:KML-2.0-http-get-map">Google Earth KML service (ver 2.0)
+      </option>
+      <option value="OGC:CSW">OGC-CSW Catalogue Service for the Web
+      </option>
+      <option value="OGC:KML">OGC-KML Keyhole Markup Language
+      </option>
+      <option value="OGC:GML">OGC-GML Geography Markup Language
+      </option>
+      <option value="OGC:ODS">OGC-ODS OpenLS Directory Service
+      </option>
       <option value="OGC:OGS">OGC-ODS OpenLS Gateway Service</option>
       <option value="OGC:OUS">OGC-ODS OpenLS Utility Service</option>
-      <option value="OGC:OPS">OGC-ODS OpenLS Presentation Service</option>
+      <option value="OGC:OPS">OGC-ODS OpenLS Presentation Service
+      </option>
       <option value="OGC:ORS">OGC-ODS OpenLS Route Service</option>
-      <option value="OGC:SOS">OGC-SOS Sensor Observation Service</option>
-      <option value="OGC:SPS">OGC-SPS Sensor Planning Service</option>
+      <option value="OGC:SOS">OGC-SOS Sensor Observation Service
+      </option>
+      <option value="OGC:SPS">OGC-SPS Sensor Planning Service
+      </option>
       <option value="OGC:SAS">OGC-SAS Sensor Alert Service</option>
       <option value="OGC:WCS">OGC-WCS Web Coverage Service</option>
-      <option value="OGC:WCS-1.1.0-http-get-capabilities">OGC-WCS Web Coverage Service (ver 1.1.0)</option>
-      <option value="OGC:WCTS">OGC-WCTS Web Coordinate Transformation Service</option>
+      <option value="OGC:WCS-1.1.0-http-get-capabilities">OGC-WCS Web Coverage Service (ver 1.1.0)
+      </option>
+      <option value="OGC:WCTS">OGC-WCTS Web Coordinate Transformation Service
+      </option>
       <option value="OGC:WFS">OGC-WFS Web Feature Service</option>
-      <option value="OGC:WFS-1.0.0-http-get-capabilities">OGC-WFS Web Feature Service (ver 1.0.0)</option>
+      <option value="OGC:WFS-1.0.0-http-get-capabilities">OGC-WFS Web Feature Service (ver 1.0.0)
+      </option>
       <option value="OGC:WFS-G">OGC-WFS-G Gazzetteer Service</option>
       <option value="OGC:WMC">OGC-WMC Web Map Context</option>
       <option value="OGC:WMS">OGC-WMS Web Map Service</option>
-      <option value="OGC:WMS-1.1.1-http-get-capabilities">OGC-WMS Capabilities service (ver 1.1.1)</option>
-      <option value="OGC:WMS-1.3.0-http-get-capabilities">OGC-WMS Capabilities service (ver 1.3.0)</option>
-      <option value="OGC:WMS-1.1.1-http-get-map">OGC Web Map Service (ver 1.1.1)</option>
-      <option value="OGC:WMS-1.3.0-http-get-map">OGC Web Map Service (ver 1.3.0)</option>
-      <option value="OGC:WMTS">OGC-WMTS Web Map Tiled Service</option>
-      <option value="OGC:WMTS-1.0.0-http-get-capabilities">OGC-WMTS Capabilities service (ver 1.0.0)</option>
-      <option value="OGC:SOS-1.0.0-http-get-observation">OGC-SOS Get Observation (ver 1.0.0)</option>
-      <option value="OGC:SOS-1.0.0-http-post-observation">OGC-SOS Get Observation (POST) (ver 1.0.0)</option>
-      <option value="OGC:WNS">OGC-WNS Web Notification Service</option>
+      <option value="OGC:WMS-1.1.1-http-get-capabilities">OGC-WMS Capabilities service (ver 1.1.1)
+      </option>
+      <option value="OGC:WMS-1.3.0-http-get-capabilities">OGC-WMS Capabilities service (ver 1.3.0)
+      </option>
+      <option value="OGC:WMS-1.1.1-http-get-map">OGC Web Map Service (ver 1.1.1)
+      </option>
+      <option value="OGC:WMS-1.3.0-http-get-map">OGC Web Map Service (ver 1.3.0)
+      </option>
+      <option value="OGC:SOS-1.0.0-http-get-observation">OGC-SOS Get Observation (ver 1.0.0)
+      </option>
+      <option value="OGC:SOS-1.0.0-http-post-observation">OGC-SOS Get Observation (POST) (ver 1.0.0)
+      </option>
+      <option value="OGC:WNS">OGC-WNS Web Notification Service
+      </option>
       <option value="OGC:WPS">OGC-WPS Web Processing Service</option>
       <option value="OGC:OWS-C">OGC OWS Context</option>
       <option value="WWW:DOWNLOAD-1.0-ftp--download">File for download through FTP</option>
@@ -2222,7 +2472,13 @@
       <option value="WWW:LINK-1.0-http--opendap">OPeNDAP URL</option>
       <option value="RBNB:DATATURBINE">Data Turbine</option>
       <option value="UKST">Unknown Service Type</option>
-    </helper>
+      <option value="INSPIRE-ATOM">INSPIRE-ATOM</option>  
+  </helper>
+  <helper sort="true" displayIf="ancestor::node()[name()='gmd:MD_Metadata']/gmd:hierarchyLevelName/gco:CharacterString[contains(.,'NonGeographicDataset')]">
+  	  <option value="WWW:DOWNLOAD-1.0-ftp--download">File for download through FTP</option>
+      <option value="WWW:DOWNLOAD-1.0-http--download">File for download</option>
+      <option value="WWW:LINK-1.0-http--link" default="">Web address (URL)</option>
+  </helper>
   </element>
   <element name="gmd:purpose" id="26.0">
     <label>Purpose</label>
@@ -2270,7 +2526,7 @@
     <description>Degree of detail in the grid dataset</description>
   </element>
   <element name="gmd:resourceConstraints" id="35.0">
-    <label>Resource constraints</label>
+    <label>Constraints</label>
     <description>Provides information about constraints which apply to the
       resource(s)
     </description>
@@ -2451,6 +2707,13 @@
     </description>
     <condition>conditional</condition>
   </element>
+  <element name="gmd:statement" id="83.0" context="gmd:LI_Lineage">
+    <label>Statement</label>
+    <description>General explanation of the data producer's knowledge about the lineage of a
+      dataset
+    </description>
+    <condition>mandatory</condition>
+  </element>
   <element name="gmd:status" id="28.0">
     <label>Status</label>
     <description>Status of the resource(s)</description>
@@ -2591,10 +2854,8 @@
     </description>
   </element>
   <element name="gmd:useLimitation" id="68.0">
-    <label>Use limitation</label>
-    <description>Limitation affecting the fitness for use of the resource. Example, _not to be
-      used for navigation_
-    </description>
+    <label>Use constraints</label>
+    <description>Restrictions and legal restraints on using the data resource</description>
   </element>
   <element name="gmd:userContactInfo" id="66.0">
     <label>User contact info</label>
@@ -2873,17 +3134,18 @@
       nameSpace and name attributes of GeneralName may be 'OGC' and 'catalogue'
     </description>
     <helper>
+      <!--INSPIRE Service type defined in MD IR / 1.3.1 Spatial data service -->
+      <option value="discovery">Discovery Service (discovery)</option> 
+      <option value="view">View Service (view)</option> 
+      <option value="download">Download Service (download)</option> 
+      <option value="transformation">Transformation Service (transformation)</option> 
+      <option value="other">Other Services (other)</option>
+      <!-- Original values- these were active and the ones above were commented out
       <option value="OGC:WMS">OGC Web Map Service (OGC:WMS)</option>
       <option value="OGC:WFS">OGC Web Feature Service (OGC:WFS)</option>
       <option value="OGC:WCS">OGC Web Coverage Service (OGC:WCS)</option>
       <option value="W3C:HTML:DOWNLOAD">Download (W3C:HTML:DOWNLOAD)</option>
-      <option value="W3C:HTML:LINK">Information (W3C:HTML:LINK)</option>
-      <!--INSPIRE Service type defined in MD IR / 1.3.1 Spatial data service type -->
-      <option value="discovery">INSPIRE Discovery Service (discovery)</option>
-      <option value="view">INSPIRE View Service (view)</option>
-      <option value="download">INSPIRE Download Service (download)</option>
-      <option value="transformation">INSPIRE Transformation Service (transformation)</option>
-      <option value="other">INSPIRE Other Services (other)</option>
+      <option value="W3C:HTML:LINK">Information (W3C:HTML:LINK)</option>-->
     </helper>
   </element>
   <element name="srv:serviceTypeVersion">
@@ -2973,8 +3235,6 @@
   </element>
   <element name="srv:serviceContact">
     <label>Service Contact</label>
-    <btnLabel>Add contact</btnLabel>
-    <btnClass>fa fa-user-plus</btnClass>
     <description>Information for contacting the service provider</description>
   </element>
   <element name="srv:name">
@@ -3361,7 +3621,7 @@
     <label>Geometric Object Type</label>
   </element>
   <element name="gmd:MD_RestrictionCode" context="gmd:accessConstraints">
-    <label>Access Restriction</label>
+    <label>Access constraints</label>
   </element>
   <element name="gmd:MD_RestrictionCode" context="gmd:useConstraints">
     <label>Use Restriction</label>
@@ -3386,5 +3646,70 @@
   </element>
   <element name="gco:Scale">
     <label>Scale</label>
+  </element>
+
+  <!-- new -->
+  <element name="gmd:CI_PresentationFormCode">
+    <label>Presentation form code</label>
+  </element>
+<element name="gmd:CI_OnLineFunctionCode">
+    <label>Online function code</label>
+  </element>
+<element name="gmd:CI_DateTypeCode">
+    <label>Date type code</label>
+  </element>
+<element name="gmd:MD_CellGeometryCode">
+    <label>Cell geometry code</label>
+  </element>
+<element name="gmd:MD_DimensionNameTypeCode">
+    <label>Dimension name type code</label>
+  </element>
+<element name="gmd:MD_DatatypeCode">
+    <label>Data type code</label>
+  </element>
+<element name="gmd:MD_CoverageContentTypeCode">
+    <label>Civerage content type code</label>
+  </element>
+<element name="gmd:MD_ImagingConditionCode">
+    <label>Imaging condition code</label>
+  </element>
+<element name="gmd:MD_ClassificationCode">
+    <label>Classification code</label>
+  </element>
+<element name="gmd:MD_RestrictionCode">
+    <label>Restriction code</label>
+  </element>
+<element name="gmd:MD_DistributionUnits">
+    <label>DDistribution units</label>
+  </element>
+<element name="gmd:MD_MediumFormatCode">
+    <label>Medium format code</label>
+  </element>
+<element name="gmd:MD_MediumNameCode">
+    <label>Medium name code</label>
+  </element>
+<element name="gmx:MX_ScopeCode">
+    <label>Scope code</label>
+  </element>
+<element name="gmd:MD_KeywordTypeCode">
+    <label>Keyword type code</label>
+  </element>
+<element name="gmd:DQ_EvaluationMethodTypeCode">
+    <label>Evaluation method type code</label>
+  </element>
+<element name="gmd:LocalisedCharacterString">
+    <label>Localised character string</label>
+  </element>
+<element name="gmd:Country">
+    <label>Country</label>
+  </element>
+<element name="srv:SV_OperationModel">
+    <label>Operation model</label>
+  </element>
+<element name="srv:SV_ServiceType">
+    <label>Service type</label>
+  </element>
+<element name="gmx:MimeFileType">
+    <label>Mime file type</label>
   </element>
 </labels>

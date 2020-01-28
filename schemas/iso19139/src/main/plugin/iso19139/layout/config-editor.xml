@@ -59,27 +59,6 @@
     <for name="gco:Real" use="number"/>
     <for name="gco:Boolean" use="checkbox"/>
 
-    <!-- Use data-gn-checkbox-with-nilreason for INSPIRE conformity, using xpath attribute.Similar configuration can be
-             applied to other boolean fields that require to handle nilreason value.
-             And additional change is required in inflate-metadata.xsl, for the elements to handle with this directive to add gco:Boolean
-             when missing due to nilreason attribute and work nicely with the metadata editor.
-             Example with gmd:pass:
-               <xsl:template match="gmd:pass[@gco:nilReason and not(gco:Boolean)]">
-                <xsl:copy>
-                  <xsl:copy-of select="@*" />
-                  <gco:Boolean></gco:Boolean>
-                </xsl:copy>
-              </xsl:template>
-              Update-fixed-info.xsl already removes gco:Boolean when empty due to nilreason attribute, to avoid xsd errors. No need to change it.
-        -->
-    <!--<for name="gco:Boolean"
-         xpath="/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass"
-         use="data-gn-checkbox-with-nilreason">
-      <directiveAttributes
-        data-tag-name="gmd:pass"
-        data-nilreason="eval#@gco:nilReason"
-        data-labels='{"true": "conformant", "false": "notConformant", "unknown": "notEvaluated"}'/>
-    </for>-->
 
     <for name="gco:Date" use="data-gn-date-picker"/>
     <for name="gco:DateTime" use="data-gn-date-picker"/>
@@ -380,6 +359,18 @@
         <col del=".."/>
       </row>
     </table>
+    <table for="gmd:DistributionFormat">
+          <header>
+            <col label="gmd:name"/>
+            <col label="gmd:version"/>
+            <col/>
+          </header>
+          <row>
+            <col xpath="gmd:MD_Format/gmd:name"/>
+            <col xapth="gmd:MD_Format/gmd:version"/>
+            <col del=".."/>
+          </row>
+        </table>
     <table for="srv:SV_OperationMetadata">
       <header>
         <col label="srv:operationName"/>
@@ -3095,7 +3086,7 @@
 
     </view>
 
-    <view name="default">
+    <view name="default" displayIfRecord="not(contains(gmd:MD_Metadata/gmd:hierarchyLevelName/gco:CharacterString,'NonGeographicDataset'))" >
       <sidePanel>
         <directive data-gn-onlinesrc-list=""/>
         <directive gn-geo-publisher=""
@@ -3172,7 +3163,7 @@
       </thesaurusList>
 
     </view>
-    <view name="advanced">
+    <view name="advanced" displayIfRecord="not(contains(gmd:MD_Metadata/gmd:hierarchyLevelName/gco:CharacterString,'NonGeographicDataset'))">
       <sidePanel>
         <directive data-gn-onlinesrc-list=""/>
         <directive gn-geo-publisher=""
@@ -3248,6 +3239,125 @@
                  in="/gmd:MD_Metadata"/>
       </tab>
     </view>
+
+    <!-- simplified non-spatial view -->
+
+    <view name="nonspatial" hideTimeInCalendar="true" default="true" displayIfRecord="contains(gmd:MD_Metadata/gmd:hierarchyLevelName/gco:CharacterString,'NonGeographicDataset')">
+      <sidePanel>
+        <directive data-gn-onlinesrc-list=""/>
+        <directive gn-geo-publisher=""
+                   data-ng-if="gnCurrentEdit.geoPublisherConfig"
+                   data-config="{{gnCurrentEdit.geoPublisherConfig}}"
+                   data-lang="lang"/>
+        <directive data-gn-validation-report=""/>
+        <directive data-gn-suggestion-list=""/>
+        <directive data-gn-need-help="user-guide/describing-information/creating-metadata.html"/>
+      </sidePanel>
+
+      <tab id="default-nonspatial" default="true" mode="flat">
+        <section name="identificationInfo">
+          <field
+            xpath="/gmd:MD_Metadata/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:title"/>
+            <text ref="title_help"/>
+            <field
+            xpath="/gmd:MD_Metadata/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:alternatetitle"/>
+            <text ref="alttitle_help"/>
+            <field
+            xpath="/gmd:MD_Metadata/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:date"/>
+            <text ref="creationdate_help"/>
+            <field
+            xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract"/>
+            <text ref="abstract_help"/>
+            <field
+            xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact"/>
+            <text ref="pointofcontact_help"/>
+            <field
+            xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency"/>
+            <text ref="updatefreq_help"/>
+            <field
+            xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords"/>
+            <text ref="keywords_help"/>
+            <field
+            xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:topicCategory"/>
+            <text ref="topiccategory_help"/>
+            <field
+            xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement"/>
+            <text ref="tempextent_help"/>
+          
+        </section>
+        <section name="gmd:distributionInfo">
+            <field name = "distributionFormat" xpath="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name" del="../.."/>
+                  <action type="add" btnLabel="addDistFormat"
+                  name="distributionFormat" or="distributionFormat"
+                  in="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution">
+                  <template>
+                    <snippet label="addDistFormat">
+                      <gmd:distributionFormat>
+                        <gmd:MD_Format>
+                          <gmd:name>
+                            <gco:CharacterString></gco:CharacterString>
+                          </gmd:name>
+                          <gmd:version>
+                            <gco:CharacterString>unknown</gco:CharacterString>
+                          </gmd:version>
+                        </gmd:MD_Format>
+                      </gmd:distributionFormat>
+                    </snippet>
+                  </template>
+                </action>
+              <text ref="distributionformat_help"/>
+        <section xpath="/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions
+                    /gmd:MD_DigitalTransferOptions/gmd:onLine"/>
+            <text ref="onlineresource_help"/>
+        </section>
+        <section name="gmd:lineage" >
+          <field name="lineage"
+                 xpath="/gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement"/>
+                 <text ref="lineage_help"/>
+        </section>
+
+      </tab>
+
+      <!-- Elements that should not use the "flat" mode -->
+      <flatModeExceptions>
+        <for name="gmd:descriptiveKeywords"/>
+        <for name="gmd:keyword"/>
+        <for name="gmd:spatialResolution"/>
+        <for name="gmd:pointOfContact"/>
+        <for name="gmd:distributor"/>
+        <for name="gmd:distributionFormat"/>
+        <for name="gmd:contact"/>
+        <for name="gmd:processor"/>
+        <for name="gmd:topicCategory"/>
+        <for name="srv:parameters"/>
+      </flatModeExceptions>
+
+      <!--
+      To configure the type of transformations
+      or the number of keyword allowed for e
+      thesaurus define a specific configuration:
+
+      eg. only 2 INSPIRE themes with Anchor.
+
+      <thesaurusList>
+        <thesaurus key="external.theme.httpinspireeceuropaeutheme-theme"
+                   maxtags="2"
+                   fieldset="false"
+                   transformations="to-iso19139-keyword-with-anchor"/>
+      </thesaurusList>
+      -->
+
+      <thesaurusList>
+        <thesaurus key="external.none.allThesaurus"
+                   fieldset="false"/>
+      </thesaurusList>
+
+    </view>
+
+    <!-- end simplified non-spatial view -->
+
+
+
     <view name="xml">
       <sidePanel>
         <directive data-gn-onlinesrc-list=""/>
@@ -3262,6 +3372,7 @@
       <tab id="xml" default="true"/>
     </view>
   </views>
+
   <batchEditing>
     <section name="identification">
       <!-- Update existing title in metadata record -->
