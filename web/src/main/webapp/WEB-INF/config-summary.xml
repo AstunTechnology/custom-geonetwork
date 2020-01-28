@@ -22,232 +22,363 @@
   ~ Rome - Italy. email: geonetwork@osgeo.org
   -->
 
-<bean:beans xmlns:bean="http://www.springframework.org/schema/beans"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            default-lazy-init="true"
-            xmlns="http://www.fao.org/geonetwork/spring"
-            xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.fao.org/geonetwork/spring http://www.fao.org/geonetwork/spring/gn-spring.xsd
-    "
->
-  <!--
-      Configuration of the taxonomy index used for faceting and
-      formatting/building facet summaries
+<beans
+  xmlns:sec="http://www.springframework.org/schema/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 
-      Each facet to be indexed is defined in the facets element. The facets element
-      lists the facets to index and how they should be indexed using attributes on facet elements as follows:
 
-      * name: the name of the facet
-      * indexKey: the name of the indexing field to be used for the facet
-      * label: the label to use for the facet in returned summaries
-      * classifier: (optional) a reference to a spring bean that should be used to
-          determine facet values for the indexing field.
-          The bean must implement the org.fao.kernel.search.classifier.Classifier interface
-          Defaults to a classifier which uses the value of the field to be indexed
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.2.xsd"
+  xmlns="http://www.springframework.org/schema/beans">
 
-      When a facet definitionis modified or added, the index MUST be rebuilt.
+  <alias name="filterChainProxy" alias="springSecurityFilterChain"/>
 
-      How facet summaries should be built and formatted for each summary type is defined
-      in the summaryTypes element. The summaryTypes element contains a number of summary type elements each
-      of which define a facet summary that can be configured for a service. Each summary type
-      element contains a number of item elements defining facets to be returned and how they
-      should be formatted as follows:
+  <bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+    <constructor-arg>
+      <list>
+        <sec:filter-chain pattern="/srv/swagger-resources/**" filters=""/>
+        <sec:filter-chain pattern="/srv/v2/**" filters=""/>
 
-      * facet: the name of a facet defined above
-      * (optional) sortBy: the ordering for the facet. Defaults to by count.
-      * (optional) sortOrder: asc or desc. Defaults is descendant.
-      * (optional) max: the number of values to be returned for the facet. Defaults to 10.
-      * (optional) depth: the depth to which hierarchical facets should be summarised. Defaults to 1.
-      * (optional) format: the format to be used for generating facet summary elements. Defaults to
-          'FACET_NAME'. Can also be 'DIMENSION', which uses a top level
-          dimension tag and category tags for sub-categories which is more suitable for hierarchical facets.
-      * (optional) translator: Define a DB translator to retrieve label from description
-          tables (eg. categoriesdes) or codelist translator to retrieve label from schema
-          codelists files.
+        <!-- TODO: This needs to be secured to not access private info -->
+        <sec:filter-chain pattern="/index/**" filters=""/>
 
-    eg. for category
+        <sec:filter-chain pattern="/dashboards/**" filters=""/>
 
-          <item dimension="category" plural="categories" indexKey="_cat" max="45"
-              translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>
+        <sec:filter-chain pattern="/doc/**" filters=""/>
+        <!-- wroAPI is protected for admin only
+        This is causing issue on node-change-warning page.
+        <sec:filter-chain pattern="/static/wroAPI" filters=""/>-->
+        <sec:filter-chain pattern="/static/**" filters=""/>
+        <sec:filter-chain pattern="/catalog/**" filters=""/>
+        <sec:filter-chain pattern="/test/**" filters=""/>
+        <sec:filter-chain pattern="/" filters=""/>
+        <sec:filter-chain pattern="/*.html" filters=""/>
+        <sec:filter-chain pattern="/*.jsp" filters=""/>
+        <sec:filter-chain pattern="/*.css" filters=""/>
+        <sec:filter-chain pattern="/images/**" filters=""/>
+        <sec:filter-chain pattern="/map/**" filters=""/>
+        <sec:filter-chain pattern="/htmlcache/**" filters=""/>
+        <sec:filter-chain pattern="/pdf/**" filters=""/>
+        <sec:filter-chain pattern="/loc/**" filters=""/>
+        <sec:filter-chain pattern="/xml/csw/test/*" filters=""/>
+        <sec:filter-chain pattern="/xml/schemas/**" filters=""/>
+        <sec:filter-chain pattern="/xsl/harvesting/**" filters=""/>
+        <sec:filter-chain pattern="/xsl/ownership/**" filters=""/>
+        <ref bean="coreFilterChain"/>
+        <!-- <sec:filter-chain pattern="/**" filters="securityContextPersistenceFilter,
+                logoutFilter,
+                formLoginFilter,
+               basicAuthenticationFilter,
+                requestCacheFilter,
+                anonymousFilter,
+                sessionMgmtFilter,
+               exceptionTranslationFilter,
+               filterSecurityInterceptor" /> -->
+      </list>
+    </constructor-arg>
+  </bean>
 
-    or for group
 
-          <item dimension="groupOwner" plural="groupOwners" indexKey="_groupOwner"
-          max="99" sortBy="value" translator="db:org.fao.geonet.repository.GroupRepository:findOne:int"/>
+  <bean id="coreFilterChain" class="org.springframework.security.web.DefaultSecurityFilterChain">
+    <constructor-arg>
+      <bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
+        <constructor-arg value="/**"/>
+      </bean>
+    </constructor-arg>
+    <constructor-arg>
+      <ref bean="filterChainFilters"/>
+    </constructor-arg>
+  </bean>
+  <bean id="filterChainFilters" class="java.util.ArrayList">
+    <constructor-arg>
+      <list>
+        <ref bean="securityContextPersistenceFilter"/>
+        <!-- To disable csrf security (not recommended) comment the following line -->
+        <ref bean="csrfFilter" />
+        <!-- To disable csrf security (not recommended) comment the upper line -->
+        <ref bean="logoutFilter"/>
+        <!-- A filter that check if an external service already authenticated user
+                     (default implementation does nothing but can be overridden) -->
+        <ref bean="multiNodeAuthenticationFilter"/>
+        <ref bean="preAuthenticationFilter"/>
+        <ref bean="basicAuthenticationFilter"/>
+        <ref bean="formLoginFilter"/>
+        <ref bean="requestCacheFilter"/>
+        <ref bean="anonymousFilter"/>
+        <ref bean="sessionMgmtFilter"/>
+        <ref bean="exceptionTranslationFilter"/>
+        <ref bean="filterSecurityInterceptor"/>
+      </list>
+    </constructor-arg>
+  </bean>
+  <!-- A filter that check if an external service already authenticated user
+                     (default implementation does nothing but can be overridden) -->
+  <bean id="multiNodeAuthenticationFilter"
+        class="jeeves.config.springutil.MultiNodeAuthenticationFilter">
+    <property name="location" value="${wrongNodeRedirectURL}"/>
+  </bean>
+  <bean id="preAuthenticationFilter" class="jeeves.config.springutil.PassthroughFilter"/>
+  <bean id="securityContextPersistenceFilter"
+        class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
+    <!-- repo -->
+    <constructor-arg ref="securityContextRepository"/>
+  </bean>
 
-  -->
+  <bean id="authenticationManager"
+        class="org.springframework.security.authentication.ProviderManager">
+    <constructor-arg>
+      <!-- providers -->
+      <list>
+        <!-- Check if the preAuthenticationFilter has already authenticated user -->
+        <ref bean="preFilterAuthenticationProvider"/>
+        <ref bean="geonetworkAuthenticationProvider"/>
+      </list>
+    </constructor-arg>
+  </bean>
 
-  <facets>
-    <facet name="keyword" indexKey="keyword" label="keywords" localized="true"/>
-    <facet name="topicCat" indexKey="topicCat" label="topicCats" localized="true"/>
-    <facet name="category" indexKey="_cat" label="categories" localized="true"/>
-    <facet name="inspireTheme" indexKey="inspiretheme" label="inspireThemes"/>
-    <facet name="inspireThemeWithAc" indexKey="inspirethemewithac" label="inspireThemesWithAc"/>
-    <facet name="inspireThemeURI" indexKey="inspirethemeuri" label="inspireThemesURI"/>
-    <facet name="denominator" indexKey="denominator" label="denominators"/>
-    <facet name="resolution" indexKey="resolution" label="resolutions"/>
-    <facet name="spatialRepresentationType" indexKey="cl_spatialRepresentationType"
-           label="spatialRepresentationTypes"/>
-    <facet name="orgName" indexKey="orgName" label="orgNames" localized="true"/>
-    <facet name="orgNameTree" indexKey="orgNameTree" label="orgNamesTree"
-           classifier="slashSplitClassifier"/>
-    <facet name="metadataPOC" indexKey="metadataPOC" label="metadataPOCs"/>
-    <facet name="serviceType" indexKey="serviceType" label="serviceTypes"/>
-    <facet name="type" indexKey="type" label="types"/>
-    <facet name="createDateYear" indexKey="createDateYear" label="createDateYears"/>
-    <facet name="format" indexKey="format" label="formats"/>
-    <facet name="title" indexKey="title" label="titles"/>
-    <facet name="metadataType" indexKey="_isTemplate" label="metadataTypes"/>
-    <facet name="isValid" indexKey="_valid" label="isValid"/>
-    <facet name="isHarvested" indexKey="_isHarvested" label="isHarvested"/>
-    <facet name="mdStatus" indexKey="_status" label="mdStatus"/>
-    <facet name="status" indexKey="cl_status" label="status"/>
-    <facet name="sourceCatalog" indexKey="_source" label="sourceCatalog"/>
-    <facet name="standard" indexKey="_schema" label="standards"/>
-    <facet name="subTemplateType" indexKey="_root" label="subTemplateTypes"/>
-    <facet name="groupOwner" indexKey="_groupOwner" label="groupOwners"/>
-    <facet name="publishedForGroup" indexKey="_groupPublished" label="publishedForGroup"/>
-	  <facet name="isPublishedToAll" indexKey="_isPublishedToAll" label="isPublishedToAll" />
-    <!--
-    Example configuration for hierarchical facet based on
-    the GeoNetwork region thesaurus or GEMET.
+  <bean id="securityContextRepository"
+        class='org.springframework.security.web.context.HttpSessionSecurityContextRepository'>
+    <property name="allowSessionCreation" value="true"/>
+  </bean>
 
-    Do not forget to add classifier configuration on config-spring-geonetwork.xml
+  <bean id="formLoginFilter"
+        class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+    <property name="postOnly" value="true"/>
+    <property name="usernameParameter" value="username"/>
+    <property name="passwordParameter" value="password"/>
+    <property name="authenticationManager" ref="authenticationManager"/>
+    <!--<property name="filterProcessesUrl" value="/signin"/>-->
+    <property name="requiresAuthenticationRequestMatcher">
+      <bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
+        <constructor-arg name="pattern" value="/signin"/>
+      </bean>
+    </property>
+    <property name="authenticationDetailsSource" ref="authenticationDetailsSource"/>
+    <property name="authenticationFailureHandler">
+      <bean
+        class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <constructor-arg value="${loginErrorForm}"></constructor-arg>
+        <property name="redirectStrategy">
+          <bean class="jeeves.config.springutil.JeevesNodeAwareRedirectStrategy"/>
+        </property>
+      </bean>
+    </property>
+    <property name="authenticationSuccessHandler">
+      <bean
+        class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+        <property name="defaultTargetUrl" value="/"/>
+        <property name="targetUrlParameter" value="redirectUrl"/>
+      </bean>
+    </property>
+    <property name="sessionAuthenticationStrategy">
+      <bean
+        class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy"/>
+    </property>
+  </bean>
 
-    Then add facet in one summaryType having format="DIMENSION" attribute.
-    <facet name="region" label="regions"
-           indexKey="keyword"
-           classifier="regionKeywordClassifier"/>
-    <facet name="gemetKeyword" label="gemetKeywords"
-           indexKey="keyword"
-           classifier="gemetKeywordClassifier"/>
-         -->
+  <bean id="basicAuthenticationFilter"
+        class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+    <constructor-arg index="0" ref="authenticationManager"/>
+    <constructor-arg index="1" ref="basicAuthenticationEntryPoint"/>
+    <property name="authenticationDetailsSource" ref="authenticationDetailsSource"/>
+  </bean>
 
-    <facet name="maintenanceAndUpdateFrequency" indexKey="cl_maintenanceAndUpdateFrequency"
-           label="maintenanceAndUpdateFrequencies"/>
-    <facet name="mdActions" indexKey="_mdActions" label="mdActions"/>
-  </facets>
+  <bean id="authenticationDetailsSource"
+        class="jeeves.config.springutil.JeevesAuthenticationDetailSource"/>
 
-  <summaryTypes>
-    <summaryType name="details" format="DIMENSION">
-      <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
-      <item facet="category" max="99" sortBy="value"
-              translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>
-      <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
-      <item facet="inspireThemeURI" sortBy="value" sortOrder="asc" max="35"
-            translator="term:http://inspire.ec.europa.eu/theme"/>
-      <!--<item facet="inspireTheme" sortBy="value" sortOrder="asc" max="35"/>-->
-      <!--<item facet="inspireThemeWithAc" sortBy="value" sortOrder="asc" max="35"/>-->
-      <item facet="keyword" max="15"/>
-      <item facet="orgName" max="25"/>
-      <!-- <item facet="sourceCatalog"
-            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/> -->
-      <item facet="createDateYear" sortBy="value" sortOrder="desc" max="40"/>
-      <item facet="format" max="15" sortBy="value" sortOrder="asc"/>
-      <item facet="mdActions"/>
-      <item facet="spatialRepresentationType"
-            translator="codelist:gmd:MD_SpatialRepresentationTypeCode"/>
-      <item facet="maintenanceAndUpdateFrequency"
-            translator="codelist:gmd:MD_MaintenanceFrequencyCode"/>
-      <!-- <item facet="status" translator="codelist:gmd:MD_ProgressCode"/> -->
-      <item facet="serviceType"/>
-      <item facet="denominator" sortBy="value" sortOrder="desc"/>
-      <item facet="resolution" sortBy="value" sortOrder="desc"/>
-      <!--
-      <item facet="region"
-            translator="term:http://geonetwork-opensource.org/thesaurus/naturalearth-and-seavox"/>
-      <item facet="gemetKeyword"
-            translator="term:http://geonetwork-opensource.org/gemet"/>
-      -->
-    </summaryType>
+  <bean id="basicAuthenticationEntryPoint"
+        class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+    <property name="realmName" value="Geonetwork"/>
+  </bean>
 
-    <summaryType name="manager" format="DIMENSION">
-      <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
-      <item facet="category" max="99" sortBy="value"
-            translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>
-      <!-- <item facet="mdStatus" max="10" sortBy="value"
-            translator="db:org.fao.geonet.repository.StatusValueRepository:findOne:int"/> -->
-      <!-- <item facet="sourceCatalog"
-            translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/> -->
-      <item facet="isValid" max="3" sortBy="value" translator="apploc:validStatus-"/>
-      <item facet="groupOwner" max="199" sortBy="value"
-            translator="db:org.fao.geonet.repository.GroupRepository:findOne:int"/>
-      <item facet="publishedForGroup" max="199" sortBy="value"
-            translator="db:org.fao.geonet.repository.GroupRepository:findOneByName"/>
-      <item facet="standard" max="15" sortBy="value"/>
-      <item facet="isHarvested" max="2" sortBy="value" translator="apploc:"/>
-      <item facet="metadataType" max="3" sortBy="value" translator="apploc:recordType-"/>
-	    <item facet="isPublishedToAll" max="2" sortBy="value" translator="apploc:"/>
-    </summaryType>
+  <bean id="logoutFilter"
+        class="org.springframework.security.web.authentication.logout.LogoutFilter">
+    <constructor-arg ref="logoutSuccessHandler"/>
+    <constructor-arg>
+      <list>
+        <bean
+          class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+        <bean
+          class="org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler">
+          <constructor-arg>
+            <array>
+              <value>JSESSIONID</value>
+            </array>
+          </constructor-arg>
+        </bean>
+      </list>
+    </constructor-arg>
+    <property name="filterProcessesUrl" value="/signout"/>
+  </bean>
 
-    <!-- (deprecated) old-style configuration supporting only
-    flat facet. It's recommended to use format="DIMENSION" for facet.
-    See above. -->
-    <summaryType name="hits">
-      <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
-      <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
-      <item facet="inspireTheme" sortBy="value" sortOrder="asc" max="35"/>
-      <item facet="inspireThemeWithAc" sortBy="value" sortOrder="asc" max="35"/>
-      <item facet="inspireThemeURI" sortBy="value" sortOrder="asc" max="35"
-            translator="term:http://inspire.ec.europa.eu/theme"/>
-      <item facet="keyword" max="15"/>
-      <item facet="orgName" max="25"/>
-      <item facet="createDateYear" sortBy="value" sortOrder="desc" max="40"/>
-      <item facet="format" max="15" sortBy="value" sortOrder="asc"/>
-      <item facet="spatialRepresentationType"
-            translator="codelist:gmd:MD_SpatialRepresentationTypeCode"/>
-      <item facet="maintenanceAndUpdateFrequency"
-            translator="codelist:gmd:MD_MaintenanceFrequencyCode"/>
-      <item facet="status" translator="codelist:gmd:MD_ProgressCode"/>
-      <item facet="serviceType"/>
-      <item facet="denominator" sortBy="value" sortOrder="desc"/>
-      <item facet="resolution" sortBy="value" sortOrder="desc"/>
-      <!--<item facet="metadataPOC" max="15"/>-->
-    </summaryType>
-    <summaryType name="subtemplates">
-      <item facet="subTemplateType"/>
-      <item facet="groupOwner" max="99" sortBy="value"
-            translator="db:org.fao.geonet.repository.GroupRepository:findOne:int"/>
-      <item facet="isValid" max="3" sortBy="value" translator="apploc:validStatus-"/>
-    </summaryType>
-    <summaryType name="contact" format="DIMENSION">
-      <item facet="orgNameTree" max="99"/>
-      <item facet="groupOwner" max="99" sortBy="value"
-            translator="db:org.fao.geonet.repository.GroupRepository:findOne:int"/>
-      <item facet="isValid" max="3" sortBy="value" translator="apploc:validStatus-"/>
-    </summaryType>
-    <summaryType name="titles">
-      <item facet="title" sortOrder="desc" max="100"/>
-    </summaryType>
-    <summaryType name="results">
-      <item facet="keyword" max="100"/>
-    </summaryType>
-    <summaryType name="results_with_summary">
-      <item facet="keyword" max="15"/>
-      <item facet="inspireTheme" sortBy="value" sortOrder="asc" max="35"/>
-      <item facet="denominator" sortBy="value" sortOrder="asc" max="20"/>
-      <item facet="spatialRepresentationType"
-            translator="codelist:gmd:MD_SpatialRepresentationTypeCode"/>
-      <item facet="orgName" max="15"/>
-      <item facet="metadataPOC" max="15"/>
-      <item facet="serviceType"/>
-      <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
-      <item facet="createDateYear" sortOrder="asc" max="40"/>
-    </summaryType>
-    <summaryType name="suggestions">
-      <item facet="keyword"/>
-      <item facet="title" sortOrder="desc" max="100"/>
-      <item facet="inspireTheme" sortBy="value" sortOrder="asc"/>
-      <item facet="denominator" sortBy="value" sortOrder="asc"/>
-      <item facet="spatialRepresentationType"
-            translator="codelist:gmd:MD_SpatialRepresentationTypeCode"/>
-      <item facet="orgName" max="100"/>
-      <item facet="metadataPOC"/>
-      <item facet="serviceType"/>
-      <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
-      <item facet="createDateYear" sortOrder="asc"/>
-    </summaryType>
-  </summaryTypes>
+  <bean id="logoutSuccessHandler"
+        class="jeeves.config.springutil.JeevesNodeAwareLogoutSuccessHandler">
+    <property name="defaultTargetUrl" value="${logout.success.url}"></property>
+  </bean>
+  <bean id="requestCacheFilter"
+        class="org.springframework.security.web.savedrequest.RequestCacheAwareFilter"/>
 
-</bean:beans>
+  <bean id="exceptionTranslationFilter"
+        class="org.springframework.security.web.access.ExceptionTranslationFilter">
+    <constructor-arg index="0" ref="authenticationEntryPoint"/>
+    <property name="accessDeniedHandler" ref="accessDeniedHandler"/>
+  </bean>
+
+  <bean id="defaultAuthenticationEntryPoint"
+        class="jeeves.config.springutil.JeevesNodeAwareLoginUrlEntryPoint">
+    <constructor-arg name="loginFormUrl" value="${loginForm}"/>
+  </bean>
+
+  <bean id="ajaxEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+
+  <bean id="authenticationEntryPoint"
+        class="org.springframework.security.web.authentication.DelegatingAuthenticationEntryPoint">
+    <constructor-arg>
+      <map>
+        <entry key-ref="apiRequestMatcher" value-ref="ajaxEntryPoint"/>
+      </map>
+    </constructor-arg>
+    <property name="defaultEntryPoint" ref="defaultAuthenticationEntryPoint" />
+  </bean>
+  <bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher" id="apiRequestMatcher">
+    <constructor-arg name="pattern" value="/*/api/**" />
+  </bean>
+
+  <bean id="accessDeniedHandler"
+        class="jeeves.config.springutil.JeevesAccessDeniedHandler">
+    <property name="errorPage" value="/accessDenied.jsp"/>
+    <property name="onlyStatusResponsePages" value="/*/api/**" />
+  </bean>
+
+  <!-- TODO remember me.
+      <bean id="rememberMeFilter"
+          class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+          <property name="rememberMeServices" ref="rememberMeServices" />
+          <property name="authenticationManager" ref="authenticationManager" />
+      </bean>
+
+      <bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+          <property name="userDetailsService" ref="myUserDetailsService" />
+          <property name="key" value="rememberGeonetwork" />
+      </bean>
+
+      <bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.rememberme.RememberMeAuthenticationProvider">
+          <property name="key" value="rememberGeonetwork" />
+      </bean>
+       -->
+  <!-- TODO session management -->
+
+  <!-- Note: the id is critical since other components of the system will look up the encoder by its id -->
+  <bean class="org.springframework.security.crypto.password.StandardPasswordEncoder"
+        id="geonetworkEncoder">
+    <constructor-arg value="${passwordSalt}"/>
+  </bean>
+
+  <bean class="org.fao.geonet.kernel.security.GeonetworkAuthenticationProvider"
+        id="geonetworkAuthenticationProvider">
+    <property name="checkUserNameOrEmail" value="true"/>
+  </bean>
+
+  <!-- Check if the preAuthenticationFilter has already authenticated user -->
+  <bean
+    class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider"
+    id="preFilterAuthenticationProvider">
+    <property name="preAuthenticatedUserDetailsService">
+      <bean id="preAuthenticatedUserDetailsService"
+            class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+        <property name="userDetailsService" ref="geonetworkAuthenticationProvider"/>
+      </bean>
+    </property>
+  </bean>
+
+
+  <bean id="roleHierarchy"
+        class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+    <property name="hierarchy">
+      <value>
+        Administrator > UserAdmin
+        UserAdmin > Reviewer
+        Reviewer > Editor
+        Editor > RegisteredUser
+        RegisteredUser > Guest
+      </value>
+    </property>
+  </bean>
+
+  <bean id="accessDecisionManager"
+        class="org.springframework.security.access.vote.AffirmativeBased">
+    <constructor-arg>
+      <!-- decisionVoters -->
+      <list>
+        <bean class="org.springframework.security.access.vote.RoleHierarchyVoter">
+          <constructor-arg ref="roleHierarchy"/>
+        </bean>
+        <bean class="org.springframework.security.access.vote.RoleVoter"/>
+        <bean class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
+        <bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean id="anonymousUser" class="org.springframework.security.core.userdetails.memory.UserAttribute">
+    <property name="password" value="anonymousUser"/>
+    <property name="authoritiesAsString" value ="ROLE_ANONYMOUS"/>
+  </bean>
+  <bean id="anonymousFilter"
+        class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
+    <constructor-arg value="GeonetworkAnonymousUser" />
+    <constructor-arg value="#{anonymousUser.password}" />
+    <constructor-arg value="#{anonymousUser.authorities}" />
+  </bean>
+
+  <bean id="anonymousProvider"
+        class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
+    <constructor-arg name="key" value="GeonetworkAnonymousUser"/>
+  </bean>
+
+  <bean id="sessionMgmtFilter"
+        class="org.springframework.security.web.session.SessionManagementFilter">
+    <constructor-arg ref="securityContextRepository"/>
+  </bean>
+
+  <!-- This bean is here to allow evaluation permissions of the current user by Geonetwork -->
+  <bean id="webPrivilegeEvaluatorCore"
+        class="org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator">
+    <constructor-arg ref="filterSecurityInterceptor"/>
+  </bean>
+
+  <!-- Listener to log the last login date in the database -->
+  <bean class="org.fao.geonet.kernel.security.listener.UpdateTimestampListener"
+        id="updateTimestampListener">
+  </bean>
+
+
+  <bean id="csrfFilter" class="org.springframework.security.web.csrf.CsrfFilter">
+    <constructor-arg>
+      <ref bean="csrfTokenRepository"/>
+    </constructor-arg>
+
+    <property name="requireCsrfProtectionMatcher" ref="geonetworkCsrfSecurityRequestMatcher" />
+  </bean>
+
+  <bean class="org.fao.geonet.security.web.csrf.CookieCsrfTokenRepository"
+        id="csrfTokenRepository">
+    <property name="cookieHttpOnly" value="false"/>
+  </bean>
+
+  <!-- RequestMatcher to exclude CSRF token from CSW requests -->
+  <bean id="geonetworkCsrfSecurityRequestMatcher"
+        class="org.fao.geonet.security.web.csrf.GeonetworkCsrfSecurityRequestMatcher">
+    <constructor-arg>
+      <set>
+        <!-- CSW requests -->
+        <value>/[a-zA-Z0-9_\-]+/[a-z]{2,3}/csw-publication!?.*</value>
+        <value>/[a-zA-Z0-9_\-]+/[a-z]{2,3}/csw-.*</value>
+        <value>/[a-zA-Z0-9_\-]+/[a-z]{2,3}/csw!?.*</value>
+        <value>/[a-zA-Z0-9_\-]+/[a-z]{2,3}/xml.search!?</value>
+      </set>
+    </constructor-arg>
+  </bean>
+</beans>

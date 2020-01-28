@@ -1,47 +1,134 @@
 /* Define custom node style here */
-.body {}
+/* @media (min-width: 768px) */
 
+/* */
 
-/* Fix for relations button in search results */
+/* Hide metadata rating stars from search page */
 
-div[gn-grid-related] .btn-group
- {
-    background: none;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    padding: 5px;
+[data-rating] {
+    display: none;
 }
 
-/* increase size of publishing body logo on search page */
+/* Expand top toolbar to allow for a bigger logo */
 
-.gn-source-logo {
-  max-width: 120px;
-  max-height: 60px;
+
+li [data-ng-if] {
+    padding-top: 10px;
 }
 
-/* hide online validation checkbox */
-a[data-gn-click-and-spin="validateInspire()"] {
-    display:none !important;
+a [data-gn-active-tb-item] {
+	padding-top:20px;
+}
+
+a.dropdown-toggle.ng-binding {
+    padding-top: 20px;
+}
+
+.form-group.ng-isolate-scope [data-gn-language-switcher] {
+    padding-top: 10px;
+} 
+
+
+.gn-logo {
+	max-height:60px;
+}
+
+@media (min-width:768px) {
+.navbar-default.gn-top-bar .navbar-nav.nav > li > a {
+	padding-top: 26px;
+	padding-bottom: 16px;
+}
+
+.navbar-default.gn-top-bar .navbar-nav.nav > li:first-child > a {
+	padding-top: 9px;
+	padding-bottom: 12px;
+}
+
+.navbar-default.gn-top-bar .navbar-right.nav {
+	margin-top:20px;
+}
+
+.navbar-default.gn-top-bar .navbar-nav.nav > li:first-child > a > span {
+	position: relative;
+	top:4px;
+}
+
+.navbar-default.gn-top-bar #navbar.authenticated .navbar-nav.nav > li:first-child > a > span {
+	top:0px;
+}
+}
+
+@media (min-width:1200px) {
+.navbar-default.gn-top-bar .gn-name.gn-truncate {
+	margin-bottom: -11px;
+}
+}
+
+[ng-app="gn_editor"] .gn-top-bar {
+	height: 64px;
+}
+
+[ng-app="gn_editor"] .gn-sub-bar {
+	top: 63px;
+}
+
+.navbar-right > li > a {
+	display: inline-block;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+}
+
+.navbar-nav.navbar-right li.signin-dropdown {
+	margin-top: -19px;
+}
+
+.navbar-right > li > a:before {
+	content: "\f007";
+}
+
+.navbar-right > li > a > img {
+	display: none;
+}
+
+.navbar-right > li > a > div {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+}
+
+.navbar-right > li.signin-dropdown > a > div {
+	display: inline-block;
+}
+
+.btn-default.active,
+.btn-default.active:hover,
+.btn-default.active:focus {
+	background-color: #a2a2a2;
 }
 
 
+.navbar-form.navbar-right {
+	margin-top:18px;
+}
 
- /* correctly align record title */
- .navbar-text{margin-top:0px;}
+/* hide the regions picker as geonames is broken */
 
- strong.ng-binding[title] {margin-top:0px;}
+.col-md-9 [data-gn-region-picker] {
+	display:none;
+}
 
- /* tweak help block in editor */
- .help-block {
-    color: #737373 !important;
-    font-size: 80% !important;
-    margin-top: 0;
-    margin-bottom: 0;
-    .error {
-      display: block;
-      margin-top: 5px;
-    }
+/* Fix the bottom toolbar position to stop things overlapping it */
 
+.gn-bottom-bar {
+    position: relative;
+}
 
+/* Make the record logos a bit bigger */
+ul.gn-resultview li.gn-grid .gn-source-logo {
+    height: inherit;
+    max-width: 140px;
+    padding-top: 0px;
+}
+/* Hide INSPIRE validation option in editor */
 

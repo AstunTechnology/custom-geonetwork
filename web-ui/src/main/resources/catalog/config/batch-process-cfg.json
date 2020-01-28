@@ -1,4 +1,19 @@
-{"config": [{
+{"config": [
+
+{   "key": "_to_eamp",
+    "type": "fixed-params",
+    "params": []
+},{
+    "key": "inspire-fix-gemet",
+    "type": "fixed-params",
+    "params": [
+    ]
+  },{
+  "key": "inspire-fix-inspire-themes",
+  "type": "fixed-params",
+  "params": [
+  ]
+},{
     "key": "url-host-relocator",
     "type": "fixed-params",
     "params": [

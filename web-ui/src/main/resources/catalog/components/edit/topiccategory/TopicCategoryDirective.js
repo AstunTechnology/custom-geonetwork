@@ -52,8 +52,7 @@
            scope: {
              values: '@gnTopiccategorySelector',
              label: '@label',
-             ref: '@ref',
-             required: '@required'
+             ref: '@ref'
            },
            templateUrl: '../../catalog/components/edit/topiccategory/partials/' +
            'topiccategory.html',
@@ -77,10 +76,12 @@
                }
              }
 
+
              var schema = gnCurrentEdit.schema;
 
              var schemaForXpath = (gnCurrentEdit.schema.indexOf("iso19139.") > -1)?
                "iso19139":gnCurrentEdit.schema;
+
              scope.xpath = xpathBySchema[schemaForXpath].xpath;
 
              // Initial values are comma separated encoded

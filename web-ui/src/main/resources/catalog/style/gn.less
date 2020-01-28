@@ -328,11 +328,6 @@ div.gn-scroll-spy {
       max-height: 76vh;
       overflow: auto;
       min-height: 500px;
-      .gn-modal-content {
-        // height of modal body - 2 * padding - height of button(s)
-        max-height: calc(~"76vh - 30px - 30px");
-        overflow: auto;
-      }
     }
   }
   .modal-dialog {
@@ -401,7 +396,7 @@ img.thumb-small {
 }
 
 
-.tt-menu {
+.tt-dropdown-menu {
   width: 422px;
   margin-top: 4px;
   padding: 8px 0;
@@ -592,7 +587,7 @@ i.fa-times.delete:hover {
 
 .gn-search-page {
   .gn-status {
-    border: 2px solid darken(@brand-info, 5%);
+    /* border: 2px solid darken(@brand-info, 5%);
     position: absolute;
     top: 95px;
     left: 2px;
@@ -604,14 +599,16 @@ i.fa-times.delete:hover {
     color: @brand-info;
     font-weight: bold;
     font-size: 80%;
-    background-color: rgba(255, 255, 255 , 0.7);
+    background-color: rgba(255, 255, 255 , 0.7); */
+    display: none;
   }
   .gn-status-mdview {
-    font-size: 110%;
+    /* font-size: 110%;
     position: relative;
     float: right;
     top: -52px;
-    margin-right: -20px;
+    margin-right: -20px; */
+    display: none;
   }
   /* Decide here which status should be displayed
   or not and with which colors */
@@ -850,16 +847,6 @@ input.ng-invalid {
   margin: 8px 0px;
 }
 
-// styles for the username dropdown in the navbar
-.username-dropdown {
-  .dropdown-menu {
-    & > .active > a {
-      color: #333;
-      background-color: transparent;
-      font-weight: 500;
-    }
-  }
-}
 // styles for login popup in the navbar
 .signin-dropdown {
   .dropdown-menu {
@@ -916,10 +903,4 @@ html {
   // See https://github.com/twbs/bootstrap/issues/18543
   // TODO Remove this if Bootstrap version is >= 4.0.0
   -ms-overflow-style: scrollbar;
-}
-
-
-// Clickable elements
-.clickable {
-  cursor: pointer;
 }
