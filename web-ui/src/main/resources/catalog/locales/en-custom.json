@@ -66,6 +66,7 @@
   "about": "Core Geonetwork Documentation",
   "passwordPattern": "Password must contain at least 1 uppercase, 1 lowercase and 1 numeric character. Sequences of 3 or more identical or ascending characters such as 111,123,abc,aaa are not allowed.",
   "system/security/passwordEnforcement/usePattern-help": "Require that the password restriction rules are applied",
-  "groupOwners" : "Publishing Body"  
+  "groupOwners" : "Publishing Body",
+  "searchPlaceHolder" : "Search for datasets"  
 }
 
