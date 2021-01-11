@@ -128,7 +128,7 @@ public final class Xml {
     public static final Namespace xsiNS = Namespace.getNamespace("xsi", XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
     public static final NioPathAwareEntityResolver PATH_RESOLVER = new NioPathAwareEntityResolver();
 
-    public static String stripNonValidXMLCharacters(String in) {
+    /*public static String stripNonValidXMLCharacters(String in) {
         StringBuffer out = new StringBuffer();
         char current;
 
@@ -144,7 +144,7 @@ public final class Xml {
                 out.append(current);
         }
         return out.toString();
-    }
+    }*/
 
     /**
      *
