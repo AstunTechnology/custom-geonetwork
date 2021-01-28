@@ -161,7 +161,7 @@
   <filter-mapping>
     <filter-name>XFrameOptionsFilter</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping> -->
 
 
   <!-- Resources servlet -->
