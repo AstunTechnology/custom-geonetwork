@@ -51,9 +51,9 @@
         scope="prototype"/>
   <bean id="arcsde" class="org.fao.geonet.kernel.harvest.harvester.arcsde.ArcSDEHarvester"
         scope="prototype"/>
-  <bean id="filesystem"
+  <!-- <bean id="filesystem"
         class="org.fao.geonet.kernel.harvest.harvester.localfilesystem.LocalFilesystemHarvester"
-        scope="prototype"/>
+        scope="prototype"/> -->
   <bean id="wfsfeatures"
         class="org.fao.geonet.kernel.harvest.harvester.wfsfeatures.WfsFeaturesHarvester"
         scope="prototype"/>
